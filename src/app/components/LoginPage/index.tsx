@@ -1,9 +1,10 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { auth, logInWithEmailAndPassword } from "app/services/firebase";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 import { createSchema } from "./config/validation";
 
 const defaultValues: any = {
@@ -30,10 +31,15 @@ export default function LoginPage() {
       // maybe trigger a loading screen
       return;
     }
-    if (user) navigate("/profilepage");
+    if (user) navigate("/profile");
+    // eslint-disable-next-line
   }, [user, loading]);
   const handleFormSubmit = async (data: any) => {
-    logInWithEmailAndPassword(data?.email, data.password);
+    try {
+      logInWithEmailAndPassword(data?.email, data.password);
+    } catch (error) {
+      toast.error("error");
+    }
   };
   return (
     <>
@@ -98,7 +104,9 @@ export default function LoginPage() {
                             </a>
                           </div>
                           <button
-                            className="btn btn-lg btn-primary full-width"
+                            className={`btn btn-lg btn-primary full-width ${
+                              isSubmitting && "cursor-not-allowed"
+                            }`}
                             type="submit"
                           >
                             Login
@@ -124,8 +132,8 @@ export default function LoginPage() {
                           </a>
                           <p>
                             Don’t you have an account?{" "}
-                            <a href="/#">Register Now!</a> it’s really simple
-                            and you can start enjoing all the benefits!
+                            <a href="/register">Register Now!</a> it’s really
+                            simple and you can start enjoing all the benefits!
                           </p>
                         </div>
                       </div>

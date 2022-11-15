@@ -1,6 +1,11 @@
 import LoginPage from "app/components/LoginPage";
 import Register from "app/components/Register";
-import DefaultLayout from "app/layouts";
+import AccountProfile from "app/container/AccountProfile";
+import Chart from "app/container/Chart";
+import FriendsBirthday from "app/container/FriendsBirthday";
+import MusicPlay from "app/container/MusicPlay";
+import NewsFeed from "app/container/NewsFeed";
+import ProfilePage from "app/container/ProfilePage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -10,7 +15,12 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<DefaultLayout />}></Route>
+          <Route path="/profile" element={<ProfilePage />}></Route>
+          <Route path="/newsfeed" element={<NewsFeed />}></Route>
+          <Route path="/musicplay" element={<MusicPlay />}></Route>
+          <Route path="/friendbirthday" element={<FriendsBirthday />}></Route>
+          <Route path="/chart" element={<Chart />}></Route>
+          <Route path="/accountprofile" element={<AccountProfile />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

@@ -16,15 +16,6 @@ export default function DefaultLayout() {
       <NavBarLeft />
       <NavBarRight />
       <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/profile" element={<ProfilePage />}></Route>
-          <Route path="/newsfeed" element={<NewsFeed />}></Route>
-          <Route path="/musicplay" element={<MusicPlay />}></Route>
-          <Route path="/friendbirthday" element={<FriendsBirthday />}></Route>
-          <Route path="/chart" element={<Chart />}></Route>
-        </Routes>
-      </BrowserRouter>
       <a className="back-to-top" href="/#">
         <svg className="back-icon" width={14} height={18}>
           <use xlinkHref="#olymp-back-to-top" />

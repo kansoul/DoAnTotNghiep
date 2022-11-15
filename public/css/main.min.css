@@ -566,6 +566,12 @@ ul {
 .admin-bar #site-header {
   top: 46px;
 }
+.curser-custom {
+  cursor: pointer;
+}
+.bold-text {
+  font-weight: bold;
+}
 @media screen and (min-width: 783px) {
   .admin-bar #site-header {
     top: 32px;

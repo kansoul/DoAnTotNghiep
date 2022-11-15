@@ -1,6 +1,9 @@
+import DefaultLayout from "app/layouts";
+
 export default function ProfilePage() {
   return (
     <>
+      <DefaultLayout />
       <div>
         <div className="container">
           <div className="row">
@@ -89,9 +92,7 @@ export default function ProfilePage() {
                             </a>
                           </li>
                           <li>
-                            <a href="29-YourAccount-AccountSettings.html">
-                              Account Settings
-                            </a>
+                            <a href="/accountprofile">Account Settings</a>
                           </li>
                         </ul>
                       </div>

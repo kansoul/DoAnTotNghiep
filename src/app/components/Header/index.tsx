@@ -1,16 +1,13 @@
 import Message from "app/container/Message";
 import { logout } from "app/services/firebase";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const param = window.location.pathname;
   const [openChat, setOpenChat] = useState<boolean>(false);
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
   };
   return (
     <>
@@ -364,12 +361,12 @@ export default function Header() {
                           </a>
                         </li>
                         <li>
-                          <button onClick={() => handleLogout()}>
+                          <a onClick={() => handleLogout()} href="/login">
                             <svg className="olymp-logout-icon">
                               <use xlinkHref="#olymp-logout-icon" />
                             </svg>
                             <span>Log Out</span>
-                          </button>
+                          </a>
                         </li>
 
                         <li>
@@ -884,9 +881,12 @@ export default function Header() {
         {/* ... end Responsive Header-BP */}
         <div
           className={`header-spacer ${
-            param === "/musicplay" ||
-            param === "/friendbirthday" ||
-            (param === "/chart" && "header-spacer-small")
+            (param === "/musicplay" ||
+              param === "/friendbirthday" ||
+              param === "/chart" ||
+              param === "/profile" ||
+              param === "/accountprofile") &&
+            "header-spacer-small"
           }`}
         />
       </div>
