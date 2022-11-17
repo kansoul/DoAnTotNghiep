@@ -1,15 +1,15 @@
-import { InputHTMLAttributes } from 'react'
-import { Controller } from 'react-hook-form'
-import { FormUIInput } from '../../FormUIInput'
+import { InputHTMLAttributes } from "react";
+import { Controller } from "react-hook-form";
+import { FormUIInput } from "../../FormUIInput";
 
 interface InputControlProps extends InputHTMLAttributes<HTMLInputElement> {
-  name?: any
-  control?: any
-  label?: string
-  defaultValue?: any
-  fixedHeight?: boolean
-  customBorder?: string
-  maxLength?: number
+  name?: any;
+  control?: any;
+  label?: string;
+  defaultValue?: any;
+  fixedHeight?: boolean;
+  maxLength?: number;
+  className?: string;
 }
 
 export function InputControl(props: InputControlProps) {
@@ -18,11 +18,11 @@ export function InputControl(props: InputControlProps) {
     control,
     fixedHeight,
     defaultValue,
-    customBorder,
+    className,
     onChange,
     onBlur,
     ...restProps
-  } = props
+  } = props;
 
   return control ? (
     <Controller
@@ -32,31 +32,35 @@ export function InputControl(props: InputControlProps) {
         <FormUIInput
           error={error}
           fixedHeight={fixedHeight}
-          customBorder={customBorder}
+          className={className}
           {...field}
           {...restProps}
-          onChange={e => {
-            onChange?.(e)
-            field.onChange(e)
+          onChange={(e) => {
+            onChange?.(e);
+            field.onChange(e);
           }}
-          onBlur={e => {
-            onBlur?.(e)
-            field.onBlur()
+          onBlur={(e) => {
+            onBlur?.(e);
+            field.onBlur();
           }}
         />
       )}
     />
   ) : (
-    <FormUIInput name={name} defaultValue={defaultValue} {...restProps} />
-  )
+    <FormUIInput
+      name={name}
+      defaultValue={defaultValue}
+      className={className}
+      {...restProps}
+    />
+  );
 }
 
 InputControl.defaultProps = {
-  name: '',
+  name: "",
   control: false,
-  label: '',
-  defaultValue: '',
+  label: "",
+  defaultValue: "",
   fixedHeight: true,
-  customBorder: '',
-  maxLength: '',
-}
+  maxLength: "",
+};

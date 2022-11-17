@@ -393,7 +393,7 @@ export default function Header() {
                     </div>
                   </div>
                 </div>
-                <a href="02-ProfilePage.html" className="author-name fn">
+                <a href="/profile" className="author-name fn">
                   <div className="author-title">
                     James Spiegel
                     <svg className="olymp-dropdown-arrow-icon">

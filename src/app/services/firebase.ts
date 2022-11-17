@@ -6,6 +6,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA3UMjRFhjFyPiOMIsQt5ubW2HB7heU4A8",
@@ -19,6 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const logInWithEmailAndPassword = async (email, password) => {
   try {
@@ -45,6 +47,9 @@ const registerWithEmailAndPassword = async (data: any) => {
       gender: data.gender,
       email: data.email,
     });
+    await addDoc(collection(db, "HobbiesAndInterests"), {
+      uuid: user.uid,
+    });
   } catch (err: any) {
     console.error(err);
     alert("Co loi xay ra hoac email da duoc dang ki");
@@ -65,6 +70,7 @@ async function getCollection(db, collectionName) {
 export {
   auth,
   db,
+  storage,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   logout,

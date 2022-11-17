@@ -1,19 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TextareaControl } from "app/components/Base";
-import { auth, db, getCollection } from "app/services/firebase";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { auth, db } from "app/services/firebase";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { hobbiesSchema } from "./config/validation";
 
 const defaultValuesData: any = {
@@ -49,14 +40,14 @@ export default function HobbiesAndInterests() {
   useEffect(() => {
     fetchHobbiesAndInterests();
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
   useEffect(() => {
     reset(defaultValues);
     // eslint-disable-next-line
   }, [defaultValues]);
 
   const handleFormSubmit = async (data: any) => {
-    const dataCollection = doc(db, "HobbiesAndInterests", defaultValues.id);
+    const dataCollection = doc(db, "HobbiesAndInterests", defaultValues?.id);
     updateDoc(dataCollection, data)
       .then(() => {
         console.log("Successfully updated doc");

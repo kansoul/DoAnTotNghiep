@@ -2595,7 +2595,7 @@ select {
   left: 20px;
 }
 .form-group.has-bootstrap-select label.control-label,
-.form-group.label-floating.is-focused label.control-label,
+.form-group.label-floating label.control-label,
 .form-group.label-floating:not(.is-empty) label.control-label,
 .form-group.label-static label.control-label {
   top: 10px;
@@ -2605,9 +2605,9 @@ select {
 .form-group.label-floating label.control-label,
 .form-group.label-placeholder label.control-label,
 .form-group.label-static label.control-label {
-  position: absolute;
+  /* position: absolute; */
   pointer-events: none;
-  transition: 0.3s ease all;
+  /* transition: 0.3s ease all; */
 }
 .accordion-collapse {
   border: none;
@@ -2727,6 +2727,9 @@ img {
   max-width: 100%;
   height: auto;
   display: inline-block;
+}
+.avatar img {
+  height: 100%;
 }
 .modal-dialog {
   pointer-events: auto;
@@ -3604,10 +3607,7 @@ select.form-control {
 .label-placeholder.with-icon label.control-label {
   left: 70px;
 }
-.date-time-picker input {
-  position: relative;
-  z-index: 5;
-}
+
 .input-group-addon {
   position: absolute;
   right: 0;
@@ -6293,12 +6293,9 @@ body.overlay-enable:before {
 .upload-photo-item {
   display: inline-block;
   vertical-align: middle;
-  width: 50%;
   padding: 50px;
   text-align: center;
   fill: #c2c5d9;
-  border-left: 1px solid #e6ecf5;
-  border-left: 1px solid var(--olympus-border-color);
 }
 .upload-photo-item:first-child {
   border-right: none;
@@ -7797,7 +7794,7 @@ ol ol li {
   border-right: none;
 }
 .news-feed-form .form-group.label-floating.has-bootstrap-select .control-label,
-.news-feed-form .form-group.label-floating.is-focused .control-label {
+.news-feed-form .form-group.label-floating .control-label {
   top: 16px;
 }
 .news-feed-form .options-message {
@@ -18023,6 +18020,19 @@ div.mejs-speed-button {
   border: 6px solid transparent;
   background: 0 0;
   content: "";
+}
+.text-black {
+  color: #515365;
+  padding: 7px 0;
+  font-size: 12px;
+  display: block;
+  font-weight: 700;
+}
+.text-black-hover:hover {
+  color: #ff5e3a;
+}
+.center-item {
+  margin: auto;
 }
 .leaflet-tooltip-bottom {
   margin-top: 6px;

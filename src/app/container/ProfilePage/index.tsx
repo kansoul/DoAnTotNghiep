@@ -1,6 +1,40 @@
 import DefaultLayout from "app/layouts";
+import { auth, db } from "app/services/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import UpdatePhoto from "./component/UpdatePhoto";
 
 export default function ProfilePage() {
+  const [profileInfo, setProfileInfo] = useState<any>();
+  const [openPopup, setOpenPopup] = useState<boolean>(false);
+  const [hobbies, setHobbies] = useState<any>();
+  const dataCollectionUsers = collection(db, "Users");
+  const dataCollectionHobbies = collection(db, "HobbiesAndInterests");
+  const [user] = useAuthState(auth);
+
+  const fetchAccountInfor = async () => {
+    const dataCollectionSnapshot = await getDocs(dataCollectionUsers);
+    const result = dataCollectionSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setProfileInfo(result.find((item: any) => item.uuid === user?.uid));
+  };
+  const fetchHobbies = async () => {
+    const dataCollectionSnapshot = await getDocs(dataCollectionHobbies);
+    const result = dataCollectionSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setHobbies(result.find((item: any) => item.uuid === user?.uid));
+  };
+  useEffect(() => {
+    fetchAccountInfor();
+    fetchHobbies();
+    // eslint-disable-next-line
+  }, [user]);
+
   return (
     <>
       <DefaultLayout />
@@ -16,7 +50,7 @@ export default function ProfilePage() {
                       <div className="col col-lg-5 col-md-5 col-sm-12 col-12">
                         <ul className="profile-menu">
                           <li>
-                            <a href="02-ProfilePage.html" className="active">
+                            <a href="/profile" className="active">
                               Timeline
                             </a>
                           </li>
@@ -74,22 +108,24 @@ export default function ProfilePage() {
                         </svg>
                         <ul className="more-dropdown more-with-triangle triangle-bottom-right">
                           <li>
-                            <a
-                              href="/#"
+                            <span
+                              onClick={() => setOpenPopup}
+                              className="text-black text-black-hover"
                               data-bs-toggle="modal"
                               data-bs-target="#update-header-photo"
                             >
                               Update Profile Photo
-                            </a>
+                            </span>
                           </li>
                           <li>
-                            <a
-                              href="/#"
+                            <span
+                              onClick={() => setOpenPopup}
+                              className="text-black text-black-hover"
                               data-bs-toggle="modal"
                               data-bs-target="#update-header-photo"
                             >
                               Update Header Photo
-                            </a>
+                            </span>
                           </li>
                           <li>
                             <a href="/accountprofile">Account Settings</a>
@@ -99,17 +135,21 @@ export default function ProfilePage() {
                     </div>
                   </div>
                   <div className="top-header-author">
-                    <a href="02-ProfilePage.html" className="author-thumb">
+                    <a href="/profile" className="author-thumb avatar">
                       <img
                         loading="lazy"
-                        src="img/author-main1.webp"
+                        src={
+                          profileInfo?.imgUrl ||
+                          "https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fimages%2Fdefault-avatar-profile-icon-vector-social-media-user-photo%2F349497933%3Fprev_url%3Ddetail&psig=AOvVaw2g0TaQd5TOa8X8kedOHLUe&ust=1668744027853000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCPixhImqtPsCFQAAAAAdAAAAABAE"
+                        }
                         alt="author"
+                        style={{ height: "full" }}
                         width={124}
                         height={124}
                       />
                     </a>
                     <div className="author-content">
-                      <a href="02-ProfilePage.html" className="h4 author-name">
+                      <a href="/profile" className="h4 author-name">
                         James Spiegel
                       </a>
                       <div className="country">San Francisco, CA</div>
@@ -138,10 +178,7 @@ export default function ProfilePage() {
                         alt="author"
                       />
                       <div className="author-date">
-                        <a
-                          className="h6 post__author-name fn"
-                          href="02-ProfilePage.html"
-                        >
+                        <a className="h6 post__author-name fn" href="/profile">
                           James Spiegel
                         </a>
                         <div className="post__date">
@@ -301,10 +338,7 @@ export default function ProfilePage() {
                         alt="author"
                       />
                       <div className="author-date">
-                        <a
-                          className="h6 post__author-name fn"
-                          href="02-ProfilePage.html"
-                        >
+                        <a className="h6 post__author-name fn" href="/profile">
                           James Spiegel
                         </a>{" "}
                         shared a<a href="/#">link</a>
@@ -471,10 +505,7 @@ export default function ProfilePage() {
                         alt="author"
                       />
                       <div className="author-date">
-                        <a
-                          className="h6 post__author-name fn"
-                          href="02-ProfilePage.html"
-                        >
+                        <a className="h6 post__author-name fn" href="/profile">
                           James Spiegel
                         </a>
                         <div className="post__date">
@@ -870,10 +901,7 @@ export default function ProfilePage() {
                         alt="author"
                       />
                       <div className="author-date">
-                        <a
-                          className="h6 post__author-name fn"
-                          href="02-ProfilePage.html"
-                        >
+                        <a className="h6 post__author-name fn" href="/profile">
                           James Spiegel
                         </a>{" "}
                         shared
@@ -1064,45 +1092,51 @@ export default function ProfilePage() {
                   <ul className="widget w-personal-info item-block">
                     <li>
                       <span className="title">About Me:</span>
-                      <span className="text">
-                        Hi, I’m James, I’m 36 and I work as a Digital Designer
-                        for the “Daydreams” Agency in Pier 56.
-                      </span>
+                      <span className="text">{profileInfo?.about}</span>
                     </li>
                     <li>
                       <span className="title">Favourite TV Shows:</span>
-                      <span className="text">
-                        Breaking Good, RedDevil, People of Interest, The Running
-                        Dead, Found, American Guy.
-                      </span>
+                      <span className="text">{hobbies?.tvShow}</span>
                     </li>
                     <li>
                       <span className="title">
                         Favourite Music Bands / Artists:
                       </span>
-                      <span className="text">
-                        Iron Maid, DC/AC, Megablow, The Ill, Kung Fighters,
-                        System of a Revenge.
-                      </span>
+                      <span className="text">{hobbies?.musics}</span>
                     </li>
                   </ul>
                   {/* .. end W-Personal-Info */}
                   {/* W-Socials */}
                   <div className="widget w-socials">
                     <h6 className="title">Other Social Networks:</h6>
-                    <a href="/#" className="social-item bg-facebook">
+                    <a
+                      href={profileInfo?.fb}
+                      target="t_blank"
+                      rel="noreferrer"
+                      className="social-item bg-facebook"
+                    >
                       <svg width={16} height={16}>
                         <use xlinkHref="#olymp-facebook-icon" />
                       </svg>
                       Facebook
                     </a>
-                    <a href="/#" className="social-item bg-twitter">
+                    <a
+                      href={profileInfo?.twitter}
+                      target="t_blank"
+                      rel="noreferrer"
+                      className="social-item bg-twitter"
+                    >
                       <svg width={16} height={16}>
                         <use xlinkHref="#olymp-twitter-icon" />
                       </svg>
                       Twitter
                     </a>
-                    <a href="/#" className="social-item bg-dribbble">
+                    <a
+                      href={profileInfo?.dribbble}
+                      target="t_blank"
+                      rel="noreferrer"
+                      className="social-item bg-dribbble"
+                    >
                       <svg width={16} height={16}>
                         <use xlinkHref="#olymp-dribble-icon" />
                       </svg>
@@ -2483,6 +2517,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+      <UpdatePhoto openPopup={openPopup} docId={profileInfo?.id} />
     </>
   );
 }
