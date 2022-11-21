@@ -2725,7 +2725,7 @@ button.btn-lg {
 img {
   vertical-align: unset;
   max-width: 100%;
-  height: auto;
+  /* height: auto; */
   display: inline-block;
 }
 .avatar img {

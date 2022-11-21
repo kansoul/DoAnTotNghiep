@@ -1,14 +1,54 @@
 import Message from "app/container/Message";
-import { logout } from "app/services/firebase";
-import { useState } from "react";
+import { auth, db, logout } from "app/services/firebase";
+import { query, where, getDocs, collection } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import { Friend } from "types/Friend";
+import FriendCard from "../FriendCard";
 
 export default function Header() {
   const param = window.location.pathname;
+  const navigate = useNavigate();
   const [openChat, setOpenChat] = useState<boolean>(false);
+  const [friendList, setFriendList] = useState<Friend[]>([]);
+  const [searchFriend, setSearchFriend] = useState<string>("");
+  const [profile, setProfile] = useState<any>();
+  const [user] = useAuthState(auth);
+  const dataCollectionFriend = collection(db, "Friends");
+  const dataCollectionUsers = collection(db, "Users");
 
+  const fetchAccountInfor = async () => {
+    const q = query(dataCollectionUsers, where("uuid", "==", user?.uid));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setProfile({ id: doc.id, ...doc.data() });
+    });
+  };
+  useEffect(() => {
+    fetchAccountInfor();
+    // eslint-disable-next-line
+  }, [user]);
+  const fetchFriends = async () => {
+    const q = query(
+      dataCollectionFriend,
+      where("relation", "array-contains", user?.uid)
+    );
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc: any) => {
+      setFriendList((oldArray) => [...oldArray, doc.data()]);
+    });
+  };
+  useEffect(() => {
+    fetchFriends();
+    // eslint-disable-next-line
+  }, [user]);
   const handleLogout = () => {
     logout();
   };
+
   return (
     <>
       <div>
@@ -20,11 +60,17 @@ export default function Header() {
             <form className="search-bar w-search notification-list friend-requests">
               <div className="form-group with-button">
                 <input
-                  className="form-control js-user-search"
+                  className="form-control"
                   placeholder="Search here people or pages..."
                   type="text"
+                  onChange={(e) => setSearchFriend(e.target.value)}
+                  value={searchFriend}
                 />
-                <button>
+                <button
+                  onClick={() => {
+                    navigate(`/searchfriend?name=${searchFriend}`);
+                  }}
+                >
                   <svg className="olymp-magnifying-glass-icon">
                     <use xlinkHref="#olymp-magnifying-glass-icon" />
                   </svg>
@@ -48,46 +94,7 @@ export default function Header() {
                   </div>
                   <div className="mCustomScrollbar" data-mcs-theme="dark">
                     <ul className="notification-list friend-requests">
-                      <li>
-                        <div className="author-thumb">
-                          <img
-                            loading="lazy"
-                            src="img/avatar55-sm.webp"
-                            alt="author"
-                            width={34}
-                            height={34}
-                          />
-                        </div>
-                        <div className="notification-event">
-                          <a href="/#" className="h6 notification-friend">
-                            Tamara Romanoff
-                          </a>
-                          <span className="chat-message-item">
-                            Mutual Friend: Sarah Hetfield
-                          </span>
-                        </div>
-                        <span className="notification-icon">
-                          <a href="/#" className="accept-request">
-                            <span className="icon-add without-text">
-                              <svg className="olymp-happy-face-icon">
-                                <use xlinkHref="#olymp-happy-face-icon" />
-                              </svg>
-                            </span>
-                          </a>
-                          <a href="/#" className="accept-request request-del">
-                            <span className="icon-minus">
-                              <svg className="olymp-happy-face-icon">
-                                <use xlinkHref="#olymp-happy-face-icon" />
-                              </svg>
-                            </span>
-                          </a>
-                        </span>
-                        <div className="more">
-                          <svg className="olymp-three-dots-icon">
-                            <use xlinkHref="#olymp-three-dots-icon" />
-                          </svg>
-                        </div>
-                      </li>
+                      <FriendCard />
                       <li>
                         <div className="author-thumb">
                           <img
@@ -327,9 +334,9 @@ export default function Header() {
                 <div className="author-thumb">
                   <img
                     alt="author"
-                    src="img/author-page.webp"
-                    width={36}
-                    height={36}
+                    src={profile?.imgUrl}
+                    width={40}
+                    height={40}
                     className="avatar"
                   />
                   <span className="icon-status online" />
@@ -395,7 +402,7 @@ export default function Header() {
                 </div>
                 <a href="/profile" className="author-name fn">
                   <div className="author-title">
-                    James Spiegel
+                    {profile?.firstName} {profile?.lastName}
                     <svg className="olymp-dropdown-arrow-icon">
                       <use xlinkHref="#olymp-dropdown-arrow-icon" />
                     </svg>
@@ -868,7 +875,7 @@ export default function Header() {
               <form className="search-bar w-search notification-list friend-requests">
                 <div className="form-group with-button">
                   <input
-                    className="form-control js-user-search"
+                    className="form-control"
                     placeholder="Search here people or pages..."
                     type="text"
                   />

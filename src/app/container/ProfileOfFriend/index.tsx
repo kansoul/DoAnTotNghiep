@@ -3,18 +3,19 @@ import { auth, db } from "app/services/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import UpdatePhoto from "./component/UpdatePhoto";
+import { useSearchParams } from "react-router-dom";
 
-export default function ProfilePage() {
+export default function ProfileOfFriend() {
+  const [searchParams] = useSearchParams();
+  const userID = searchParams.get("userID");
   const [profileInfo, setProfileInfo] = useState<any>();
-  const [openPopup, setOpenPopup] = useState<boolean>(false);
   const [hobbies, setHobbies] = useState<any>();
   const dataCollectionUsers = collection(db, "Users");
   const dataCollectionHobbies = collection(db, "HobbiesAndInterests");
   const [user] = useAuthState(auth);
 
   const fetchAccountInfor = async () => {
-    const q = query(dataCollectionUsers, where("uuid", "==", user?.uid));
+    const q = query(dataCollectionUsers, where("uuid", "==", userID));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -22,7 +23,7 @@ export default function ProfilePage() {
     });
   };
   const fetchHobbies = async () => {
-    const q = query(dataCollectionHobbies, where("uuid", "==", user?.uid));
+    const q = query(dataCollectionHobbies, where("uuid", "==", userID));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -109,7 +110,6 @@ export default function ProfilePage() {
                         <ul className="more-dropdown more-with-triangle triangle-bottom-right">
                           <li>
                             <span
-                              onClick={() => setOpenPopup}
                               className="text-black text-black-hover"
                               data-bs-toggle="modal"
                               data-bs-target="#update-header-photo"
@@ -119,7 +119,6 @@ export default function ProfilePage() {
                           </li>
                           <li>
                             <span
-                              onClick={() => setOpenPopup}
                               className="text-black text-black-hover"
                               data-bs-toggle="modal"
                               data-bs-target="#update-header-photo"
@@ -2520,7 +2519,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <UpdatePhoto openPopup={openPopup} docId={profileInfo?.id} />
     </>
   );
 }

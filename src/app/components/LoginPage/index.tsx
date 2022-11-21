@@ -12,7 +12,10 @@ const defaultValues: any = {
   password: "",
 };
 
-export default function LoginPage() {
+export default function LoginPage(props: {
+  setStateLogin: (value: boolean) => void;
+}) {
+  const { setStateLogin } = props;
   const {
     register,
     handleSubmit,
@@ -132,8 +135,14 @@ export default function LoginPage() {
                           </a>
                           <p>
                             Don’t you have an account?{" "}
-                            <a href="/register">Register Now!</a> it’s really
-                            simple and you can start enjoing all the benefits!
+                            <span
+                              onClick={() => setStateLogin(false)}
+                              style={{ color: "#ff5e3a", cursor: "pointer" }}
+                            >
+                              Register Now!
+                            </span>{" "}
+                            it’s really simple and you can start enjoing all the
+                            benefits!
                           </p>
                         </div>
                       </div>

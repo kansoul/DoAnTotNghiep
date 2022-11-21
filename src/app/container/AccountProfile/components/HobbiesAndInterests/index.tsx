@@ -1,12 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TextareaControl } from "app/components/Base";
 import { auth, db } from "app/services/firebase";
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
 import { hobbiesSchema } from "./config/validation";
-
 const defaultValuesData: any = {
   sport: "",
   tvShow: "",
@@ -30,12 +36,12 @@ export default function HobbiesAndInterests() {
   const [user] = useAuthState(auth);
 
   const fetchHobbiesAndInterests = async () => {
-    const dataCollectionSnapshot = await getDocs(dataCollection);
-    const result = dataCollectionSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setDefaultValues(result.find((item: any) => item.uuid === user?.uid));
+    const q = query(dataCollection, where("uuid", "==", user?.uid));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setDefaultValues({ id: doc.id, ...doc.data() });
+    });
   };
   useEffect(() => {
     fetchHobbiesAndInterests();
@@ -48,6 +54,7 @@ export default function HobbiesAndInterests() {
 
   const handleFormSubmit = async (data: any) => {
     const dataCollection = doc(db, "HobbiesAndInterests", defaultValues?.id);
+    delete data.id;
     updateDoc(dataCollection, data)
       .then(() => {
         console.log("Successfully updated doc");
