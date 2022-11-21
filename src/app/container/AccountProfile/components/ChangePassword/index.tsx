@@ -26,7 +26,6 @@ export default function ChangePassword() {
   });
 
   const handleFormSubmit = async (data: any) => {
-    console.log(data);
     try {
       await signInWithEmailAndPassword(auth, user.email, data.oldPassword);
       updatePassword(user, data.newPassword)

@@ -140,7 +140,7 @@ export default function ProfilePage() {
                         loading="lazy"
                         src={
                           profileInfo?.imgUrl ||
-                          "https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fimages%2Fdefault-avatar-profile-icon-vector-social-media-user-photo%2F349497933%3Fprev_url%3Ddetail&psig=AOvVaw2g0TaQd5TOa8X8kedOHLUe&ust=1668744027853000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCPixhImqtPsCFQAAAAAdAAAAABAE"
+                          "https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
                         }
                         alt="author"
                         style={{ height: "full" }}
