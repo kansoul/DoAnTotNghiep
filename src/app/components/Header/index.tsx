@@ -1,6 +1,12 @@
 import Message from "app/container/Message";
 import { auth, db, logout } from "app/services/firebase";
-import { query, where, getDocs, collection } from "firebase/firestore";
+import {
+  query,
+  where,
+  getDocs,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -10,14 +16,18 @@ import FriendCard from "../FriendCard";
 export default function Header() {
   const param = window.location.pathname;
   const navigate = useNavigate();
+  const [openChatBox, setOpenChatBox] = useState<boolean>(false);
   const [openChat, setOpenChat] = useState<boolean>(false);
+  const [openFriendRequest, setOpenFriendRequest] = useState<boolean>(false);
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
+
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [searchFriend, setSearchFriend] = useState<string>("");
   const [profile, setProfile] = useState<any>();
   const [user] = useAuthState(auth);
   const dataCollectionFriend = collection(db, "Friends");
   const dataCollectionUsers = collection(db, "Users");
-
+  const [onChangeState, setChangeState] = useState<any>("");
   const fetchAccountInfor = async () => {
     const q = query(dataCollectionUsers, where("uuid", "==", user?.uid));
 
@@ -30,21 +40,48 @@ export default function Header() {
     fetchAccountInfor();
     // eslint-disable-next-line
   }, [user]);
+  const reload = () => {
+    fetchFriends();
+    fetchAccountInfor();
+  };
   const fetchFriends = async () => {
+    let data: any = [];
     const q = query(
       dataCollectionFriend,
-      where("relation", "array-contains", user?.uid)
+      where("relation", "array-contains", user?.uid),
+      where("request", "!=", user?.uid),
+      where("status", "==", "WAITING")
     );
-
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc: any) => {
-      setFriendList((oldArray) => [...oldArray, doc.data()]);
+    // const querySnapshot = await getDocs(q);
+    // querySnapshot.forEach((doc: any) => {
+    //   data.push({ idDoc: doc.id, ...doc.data() });
+    // });
+    onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        setChangeState(change);
+        if (change.type === "added") {
+          data.push({ idDoc: change.doc.id, ...change.doc.data() });
+        }
+        if (change.type === "modified") {
+          reload();
+        }
+        if (change.type === "removed") {
+          reload();
+        }
+      });
     });
+    setFriendList(data);
   };
+
   useEffect(() => {
     fetchFriends();
     // eslint-disable-next-line
   }, [user]);
+
+  useEffect(() => {
+    // eslint-disable-next-line
+  }, [onChangeState]);
+
   const handleLogout = () => {
     logout();
   };
@@ -85,96 +122,26 @@ export default function Header() {
                 <svg className="olymp-happy-face-icon">
                   <use xlinkHref="#olymp-happy-face-icon" />
                 </svg>
-                <div className="label-avatar bg-blue">6</div>
+                <div className="label-avatar bg-blue">{friendList.length}</div>
                 <div className="more-dropdown more-with-triangle triangle-top-center">
                   <div className="ui-block-title ui-block-title-small">
                     <h6 className="title">FRIEND REQUESTS</h6>
                     <a href="/#">Find Friends</a>
                     <a href="/#">Settings</a>
                   </div>
-                  <div className="mCustomScrollbar" data-mcs-theme="dark">
+                  <div
+                    className="scroll-custom"
+                    data-mcs-theme="dark"
+                    style={{ maxHeight: "300px" }}
+                  >
                     <ul className="notification-list friend-requests">
-                      <FriendCard />
-                      <li>
-                        <div className="author-thumb">
-                          <img
-                            loading="lazy"
-                            src="img/avatar56-sm.webp"
-                            alt="author"
-                            width={34}
-                            height={34}
-                          />
-                        </div>
-                        <div className="notification-event">
-                          <a href="/#" className="h6 notification-friend">
-                            Tony Stevens
-                          </a>
-                          <span className="chat-message-item">
-                            4 Friends in Common
-                          </span>
-                        </div>
-                        <span className="notification-icon">
-                          <a href="/#" className="accept-request">
-                            <span className="icon-add without-text">
-                              <svg className="olymp-happy-face-icon">
-                                <use xlinkHref="#olymp-happy-face-icon" />
-                              </svg>
-                            </span>
-                          </a>
-                          <a href="/#" className="accept-request request-del">
-                            <span className="icon-minus">
-                              <svg className="olymp-happy-face-icon">
-                                <use xlinkHref="#olymp-happy-face-icon" />
-                              </svg>
-                            </span>
-                          </a>
-                        </span>
-                        <div className="more">
-                          <svg className="olymp-three-dots-icon">
-                            <use xlinkHref="#olymp-three-dots-icon" />
-                          </svg>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="author-thumb">
-                          <img
-                            loading="lazy"
-                            src="img/avatar58-sm.webp"
-                            alt="author"
-                            width={34}
-                            height={34}
-                          />
-                        </div>
-                        <div className="notification-event">
-                          <a href="/#" className="h6 notification-friend">
-                            Stagg Clothing
-                          </a>
-                          <span className="chat-message-item">
-                            9 Friends in Common
-                          </span>
-                        </div>
-                        <span className="notification-icon">
-                          <a href="/#" className="accept-request">
-                            <span className="icon-add without-text">
-                              <svg className="olymp-happy-face-icon">
-                                <use xlinkHref="#olymp-happy-face-icon" />
-                              </svg>
-                            </span>
-                          </a>
-                          <a href="/#" className="accept-request request-del">
-                            <span className="icon-minus">
-                              <svg className="olymp-happy-face-icon">
-                                <use xlinkHref="#olymp-happy-face-icon" />
-                              </svg>
-                            </span>
-                          </a>
-                        </span>
-                        <div className="more">
-                          <svg className="olymp-three-dots-icon">
-                            <use xlinkHref="#olymp-three-dots-icon" />
-                          </svg>
-                        </div>
-                      </li>
+                      {friendList.map((value: any) => (
+                        <FriendCard
+                          valueFriend={value}
+                          key={value.id}
+                          reload={reload}
+                        />
+                      ))}
                     </ul>
                   </div>
                   <a href="/#" className="view-all bg-blue">
@@ -193,7 +160,11 @@ export default function Header() {
                     <a href="/#">Mark all as read</a>
                     <a href="/#">Settings</a>
                   </div>
-                  <div className="mCustomScrollbar" data-mcs-theme="dark">
+                  <div
+                    className="scroll-custom"
+                    data-mcs-theme="dark"
+                    style={{ maxHeight: "300px" }}
+                  >
                     <ul className="notification-list chat-message">
                       <li className="message-unread">
                         <div className="author-thumb">
@@ -225,7 +196,7 @@ export default function Header() {
                         <span className="notification-icon">
                           <button
                             type="button"
-                            onClick={() => setOpenChat(true)}
+                            onClick={() => setOpenChatBox(true)}
                           >
                             <svg className="olymp-chat---messages-icon">
                               <use xlinkHref="#olymp-chat---messages-icon" />
@@ -267,7 +238,7 @@ export default function Header() {
                         <span className="notification-icon">
                           <button
                             type="button"
-                            onClick={() => setOpenChat(true)}
+                            onClick={() => setOpenChatBox(true)}
                           >
                             <svg className="olymp-chat---messages-icon">
                               <use xlinkHref="#olymp-chat---messages-icon" />
@@ -310,7 +281,7 @@ export default function Header() {
                         <span className="notification-icon">
                           <button
                             type="button"
-                            onClick={() => setOpenChat(true)}
+                            onClick={() => setOpenChatBox(true)}
                           >
                             <svg className="olymp-chat---messages-icon">
                               <use xlinkHref="#olymp-chat---messages-icon" />
@@ -344,7 +315,11 @@ export default function Header() {
                   />
                   <span className="icon-status online" />
                   <div className="more-dropdown more-with-triangle">
-                    <div className="mCustomScrollbar" data-mcs-theme="dark">
+                    <div
+                      className="scroll-custom"
+                      data-mcs-theme="dark"
+                      style={{ maxHeight: "300px" }}
+                    >
                       <div className="ui-block-title ui-block-title-small">
                         <h6 className="title">Your Account</h6>
                       </div>
@@ -429,11 +404,15 @@ export default function Header() {
               role="tablist"
             >
               <li className="nav-item" role="presentation">
-                <a
+                <span
                   className="nav-link"
                   id="request-tab"
                   data-bs-toggle="tab"
-                  href="#request"
+                  onClick={() => {
+                    setOpenFriendRequest(!openFriendRequest);
+                    setOpenChat(false);
+                    setOpenSearch(false);
+                  }}
                   role="tab"
                   aria-controls="request"
                   aria-selected="false"
@@ -442,16 +421,22 @@ export default function Header() {
                     <svg className="olymp-happy-face-icon">
                       <use xlinkHref="#olymp-happy-face-icon" />
                     </svg>
-                    <div className="label-avatar bg-blue">6</div>
+                    <div className="label-avatar bg-blue">
+                      {friendList.length}
+                    </div>
                   </div>
-                </a>
+                </span>
               </li>
               <li className="nav-item" role="presentation">
-                <a
+                <span
                   className="nav-link"
                   id="chat-tab"
                   data-bs-toggle="tab"
-                  href="#chat"
+                  onClick={() => {
+                    setOpenFriendRequest(false);
+                    setOpenChat(!openChat);
+                    setOpenSearch(false);
+                  }}
                   role="tab"
                   aria-controls="chat"
                   aria-selected="false"
@@ -462,32 +447,18 @@ export default function Header() {
                     </svg>
                     <div className="label-avatar bg-purple">2</div>
                   </div>
-                </a>
+                </span>
               </li>
               <li className="nav-item" role="presentation">
-                <a
-                  className="nav-link"
-                  id="notification-tab"
-                  data-bs-toggle="tab"
-                  href="#notification"
-                  role="tab"
-                  aria-controls="notification"
-                  aria-selected="false"
-                >
-                  <div className="control-icon has-items">
-                    <svg className="olymp-thunder-icon">
-                      <use xlinkHref="#olymp-thunder-icon" />
-                    </svg>
-                    <div className="label-avatar bg-primary">8</div>
-                  </div>
-                </a>
-              </li>
-              <li className="nav-item" role="presentation">
-                <a
+                <span
                   className="nav-link"
                   id="search-tab"
                   data-bs-toggle="tab"
-                  href="#search"
+                  onClick={() => {
+                    setOpenFriendRequest(false);
+                    setOpenChat(false);
+                    setOpenSearch(!openSearch);
+                  }}
                   role="tab"
                   aria-controls="search"
                   aria-selected="false"
@@ -498,180 +469,38 @@ export default function Header() {
                   <svg className="olymp-close-icon">
                     <use xlinkHref="#olymp-close-icon" />
                   </svg>
-                </a>
+                </span>
               </li>
             </ul>
           </div>
           {/* Tab panes */}
           <div className="tab-content tab-content-responsive">
             <div
-              className="tab-pane fade"
+              className={`tab-pane fade ${
+                openFriendRequest ? "active show" : ""
+              }`}
               id="request"
               role="tabpanel"
               aria-labelledby="request-tab"
             >
-              <div className="mCustomScrollbar" data-mcs-theme="dark">
+              <div
+                className="scroll-custom"
+                data-mcs-theme="dark"
+                style={{ maxHeight: "300px" }}
+              >
                 <div className="ui-block-title ui-block-title-small">
                   <h6 className="title">FRIEND REQUESTS</h6>
                   <a href="/#">Find Friends</a>
                   <a href="/#">Settings</a>
                 </div>
                 <ul className="notification-list friend-requests">
-                  <li>
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar55-sm.webp"
-                        alt="author"
-                        width={34}
-                        height={34}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      <a href="/#" className="h6 notification-friend">
-                        Tamara Romanoff
-                      </a>
-                      <span className="chat-message-item">
-                        Mutual Friend: Sarah Hetfield
-                      </span>
-                    </div>
-                    <span className="notification-icon">
-                      <a href="/#" className="accept-request">
-                        <span className="icon-add without-text">
-                          <svg className="olymp-happy-face-icon">
-                            <use xlinkHref="#olymp-happy-face-icon" />
-                          </svg>
-                        </span>
-                      </a>
-                      <a href="/#" className="accept-request request-del">
-                        <span className="icon-minus">
-                          <svg className="olymp-happy-face-icon">
-                            <use xlinkHref="#olymp-happy-face-icon" />
-                          </svg>
-                        </span>
-                      </a>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar56-sm.webp"
-                        alt="author"
-                        width={34}
-                        height={34}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      <a href="/#" className="h6 notification-friend">
-                        Tony Stevens
-                      </a>
-                      <span className="chat-message-item">
-                        4 Friends in Common
-                      </span>
-                    </div>
-                    <span className="notification-icon">
-                      <a href="/#" className="accept-request">
-                        <span className="icon-add without-text">
-                          <svg className="olymp-happy-face-icon">
-                            <use xlinkHref="#olymp-happy-face-icon" />
-                          </svg>
-                        </span>
-                      </a>
-                      <a href="/#" className="accept-request request-del">
-                        <span className="icon-minus">
-                          <svg className="olymp-happy-face-icon">
-                            <use xlinkHref="#olymp-happy-face-icon" />
-                          </svg>
-                        </span>
-                      </a>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                    </div>
-                  </li>
-                  <li className="accepted">
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar57-sm.webp"
-                        alt="author"
-                        width={34}
-                        height={34}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      You and
-                      <a href="/#" className="h6 notification-friend">
-                        Mary Jane Stark
-                      </a>{" "}
-                      just became friends. Write on
-                      <a href="/#" className="notification-link">
-                        her wall
-                      </a>
-                      .
-                    </div>
-                    <span className="notification-icon">
-                      <svg className="olymp-happy-face-icon">
-                        <use xlinkHref="#olymp-happy-face-icon" />
-                      </svg>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                      <svg className="olymp-little-delete">
-                        <use xlinkHref="#olymp-little-delete" />
-                      </svg>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar58-sm.webp"
-                        alt="author"
-                        width={34}
-                        height={34}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      <a href="/#" className="h6 notification-friend">
-                        Stagg Clothing
-                      </a>
-                      <span className="chat-message-item">
-                        9 Friends in Common
-                      </span>
-                    </div>
-                    <span className="notification-icon">
-                      <a href="/#" className="accept-request">
-                        <span className="icon-add without-text">
-                          <svg className="olymp-happy-face-icon">
-                            <use xlinkHref="#olymp-happy-face-icon" />
-                          </svg>
-                        </span>
-                      </a>
-                      <a href="/#" className="accept-request request-del">
-                        <span className="icon-minus">
-                          <svg className="olymp-happy-face-icon">
-                            <use xlinkHref="#olymp-happy-face-icon" />
-                          </svg>
-                        </span>
-                      </a>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                    </div>
-                  </li>
+                  {friendList.map((value: any) => (
+                    <FriendCard
+                      valueFriend={value}
+                      key={value.id}
+                      reload={reload}
+                    />
+                  ))}
                 </ul>
                 <a href="/#" className="view-all bg-blue">
                   Check all your Events
@@ -679,12 +508,16 @@ export default function Header() {
               </div>
             </div>
             <div
-              className="tab-pane fade"
+              className={`tab-pane fade ${openChat ? "active show" : ""}`}
               id="chat"
               role="tabpanel"
               aria-labelledby="chat-tab"
             >
-              <div className="mCustomScrollbar" data-mcs-theme="dark">
+              <div
+                className="scroll-custom"
+                data-mcs-theme="dark"
+                style={{ maxHeight: "300px" }}
+              >
                 <div className="ui-block-title ui-block-title-small">
                   <h6 className="title">Chat / Messages</h6>
                   <a href="/#">Mark all as read</a>
@@ -870,7 +703,7 @@ export default function Header() {
               </div>
             </div>
             <div
-              className="tab-pane fade"
+              className={`tab-pane fade ${openSearch ? "active show" : ""}`}
               id="search"
               role="tabpanel"
               aria-labelledby="search-tab"
@@ -900,7 +733,7 @@ export default function Header() {
           }`}
         />
       </div>
-      <Message openChat={openChat} setOpenChat={setOpenChat} />
+      <Message openChat={openChatBox} setOpenChat={setOpenChatBox} />
     </>
   );
 }

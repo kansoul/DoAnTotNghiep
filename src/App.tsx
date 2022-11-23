@@ -12,30 +12,38 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   return (
     <div className="App">
-      <BrowserRouter>
-        {user?.email ? (
-          <Routes>
-            <Route path="/login" element={<LoginOrSignin />} />
-            <Route path="*" element={<Navigate replace to="/profile" />} />
-            <Route path="/profile" element={<ProfilePage />}></Route>
-            <Route path="/newsfeed" element={<NewsFeed />}></Route>
-            <Route path="/musicplay" element={<MusicPlay />}></Route>
-            <Route path="/friendbirthday" element={<FriendsBirthday />}></Route>
-            <Route path="/chart" element={<Chart />}></Route>
-            <Route path="/accountprofile" element={<AccountProfile />}></Route>
-            <Route path="/searchfriend" element={<SearchFriend />}></Route>
-            <Route
-              path="/profileoffriend"
-              element={<ProfileOfFriend />}
-            ></Route>
-          </Routes>
+      {!loading &&
+        (!user?.email ? (
+          <BrowserRouter>
+            <LoginOrSignin />
+          </BrowserRouter>
         ) : (
-          <LoginOrSignin />
-        )}
-      </BrowserRouter>
+          <BrowserRouter>
+            <Routes>
+              <Route path="*" element={<Navigate replace to="/profile" />} />
+              <Route path="/profile" element={<ProfilePage />}></Route>
+              <Route path="/newsfeed" element={<NewsFeed />}></Route>
+              <Route path="/musicplay" element={<MusicPlay />}></Route>
+              <Route
+                path="/friendbirthday"
+                element={<FriendsBirthday />}
+              ></Route>
+              <Route path="/chart" element={<Chart />}></Route>
+              <Route
+                path="/accountprofile"
+                element={<AccountProfile />}
+              ></Route>
+              <Route path="/searchfriend" element={<SearchFriend />}></Route>
+              <Route
+                path="/profileoffriend"
+                element={<ProfileOfFriend />}
+              ></Route>
+            </Routes>
+          </BrowserRouter>
+        ))}
     </div>
   );
 }

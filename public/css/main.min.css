@@ -9,6 +9,21 @@ ul {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.scroll-custom {
+  overflow-y: scroll !important;
+}
+.scroll-custom::-webkit-scrollbar {
+  width: 2px;
+};
+.scroll-custom::-webkit-scrollbar-track {
+  background: #fff;
+};
+.scroll-custom::-webkit-scrollbar-thumb {
+  background: #fff;
+};
+.scroll-custom::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+};
 .fc-unselectable,
 .irs {
   -webkit-touch-callout: none;
@@ -18029,6 +18044,15 @@ div.mejs-speed-button {
   font-weight: 700;
 }
 .text-black-hover:hover {
+  color: #ff5e3a;
+}
+.text-span-card-chat {
+  color: #515365;
+  font-size: 12px;
+  display: block;
+  font-weight: 700;
+}
+.text-span-card-chat-hover:hover {
   color: #ff5e3a;
 }
 .center-item {

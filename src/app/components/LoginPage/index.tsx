@@ -1,9 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { auth, logInWithEmailAndPassword } from "app/services/firebase";
-import { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { logInWithEmailAndPassword } from "app/services/firebase";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createSchema } from "./config/validation";
 
@@ -26,17 +23,6 @@ export default function LoginPage(props: {
     reValidateMode: "onChange",
     defaultValues,
   });
-
-  const [user, loading] = useAuthState(auth);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (loading) {
-      // maybe trigger a loading screen
-      return;
-    }
-    if (user) navigate("/profile");
-    // eslint-disable-next-line
-  }, [user, loading]);
   const handleFormSubmit = async (data: any) => {
     try {
       logInWithEmailAndPassword(data?.email, data.password);

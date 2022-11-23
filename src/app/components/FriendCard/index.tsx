@@ -1,10 +1,69 @@
-export default function FriendCard() {
+import { db } from "app/services/firebase";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
+
+export default function FriendCard(props: { valueFriend: any; reload: any }) {
+  const { valueFriend, reload } = props;
+  const [friendData, setFriendData] = useState<any>([]);
+  const dataCollectionUsers = collection(db, "Users");
+  const fetchAccountInfor = async () => {
+    const q = query(
+      dataCollectionUsers,
+      where("uuid", "==", valueFriend?.request)
+    );
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setFriendData({ id: doc.id, ...doc.data() });
+    });
+  };
+  useEffect(() => {
+    fetchAccountInfor();
+    // eslint-disable-next-line
+  }, [valueFriend]);
+
+  const addFriend = () => {
+    const dataCollection = doc(db, "Friends", valueFriend?.idDoc);
+    updateDoc(dataCollection, {
+      status: "ACCEPT",
+    })
+      .then(() => {
+        console.log("Successfully updated doc");
+        reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const declineFriend = () => {
+    const dataCollection = doc(db, "Friends", valueFriend?.idDoc);
+    deleteDoc(dataCollection)
+      .then(() => {
+        console.log("Successfully updated doc");
+        reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <li>
       <div className="author-thumb">
         <img
           loading="lazy"
-          src="img/avatar55-sm.webp"
+          src={
+            friendData.imgUrl ||
+            "https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
+          }
           alt="author"
           width={34}
           height={34}
@@ -12,25 +71,32 @@ export default function FriendCard() {
       </div>
       <div className="notification-event">
         <span className="h6 notification-friend text-black text-black-hover">
-          Tamara Romanoff
+          {friendData.firstName} {friendData.lastName}
         </span>
-        <span className="chat-message-item">Mutual Friend: Sarah Hetfield</span>
       </div>
       <span className="notification-icon">
-        <a href="/#" className="accept-request">
+        <span
+          onClick={() => addFriend()}
+          style={{ cursor: "pointer" }}
+          className="accept-request"
+        >
           <span className="icon-add without-text">
             <svg className="olymp-happy-face-icon">
               <use xlinkHref="#olymp-happy-face-icon" />
             </svg>
           </span>
-        </a>
-        <a href="/#" className="accept-request request-del">
+        </span>
+        <span
+          onClick={() => declineFriend()}
+          style={{ cursor: "pointer" }}
+          className="accept-request request-del"
+        >
           <span className="icon-minus">
             <svg className="olymp-happy-face-icon">
               <use xlinkHref="#olymp-happy-face-icon" />
             </svg>
           </span>
-        </a>
+        </span>
       </span>
       <div className="more">
         <svg className="olymp-three-dots-icon">
