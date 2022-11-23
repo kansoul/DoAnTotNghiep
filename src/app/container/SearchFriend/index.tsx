@@ -23,6 +23,9 @@ export default function SearchFriend() {
   const [friendList, setFriendList] = useState<any>([]);
   const [friendAddList, setFriendAddList] = useState<any>([]);
   const [friendWaitingList, setFriendWaitingList] = useState<any>([]);
+  const [friendWaitingAcceptList, setFriendWaitingAcceptList] = useState<any>(
+    []
+  );
 
   const [user] = useAuthState(auth);
 
@@ -46,6 +49,7 @@ export default function SearchFriend() {
       startAt(searchName),
       endAt(`${searchName}\uf8ff`)
     );
+
     const querySnapshot = await getDocs(q);
     let data: any = [];
     querySnapshot.forEach((doc: any) => {
@@ -53,6 +57,7 @@ export default function SearchFriend() {
         data.push(doc.data());
       }
     });
+
     setSearchList(data);
   };
   useEffect(() => {
@@ -69,12 +74,20 @@ export default function SearchFriend() {
   useEffect(() => {
     setFriendWaitingList([]);
     setFriendAddList([]);
+    setFriendWaitingAcceptList([]);
+
     searchList.forEach((valSearch) => {
       if (friendList.length > 0) {
         friendList.forEach((element) => {
           if (element?.relation?.includes(valSearch.uuid)) {
             if (element?.status === "WAITING") {
-              setFriendWaitingList((prevArray) => [...prevArray, valSearch]);
+              if (element?.request === user?.uid) {
+                setFriendWaitingList((prevArray) => [...prevArray, valSearch]);
+              } else
+                setFriendWaitingAcceptList((prevArray) => [
+                  ...prevArray,
+                  valSearch,
+                ]);
             } else setFriendAddList((prevArray) => [...prevArray, valSearch]);
           }
         });
@@ -82,7 +95,6 @@ export default function SearchFriend() {
     });
     // eslint-disable-next-line
   }, [friendList]);
-
   useEffect(() => {
     const searchFriend = searchList.filter(function (cv) {
       return !friendWaitingList.find(function (e) {
@@ -94,9 +106,14 @@ export default function SearchFriend() {
         return e.uuid === cv.uuid;
       });
     });
-    setSearchList(removeFriendList);
+    const removeWaitingAcceptList = removeFriendList.filter(function (cv) {
+      return !friendWaitingAcceptList.find(function (e) {
+        return e.uuid === cv.uuid;
+      });
+    });
+    setSearchList(removeWaitingAcceptList);
     // eslint-disable-next-line
-  }, [friendWaitingList, friendAddList]);
+  }, [friendWaitingList, friendAddList, friendWaitingAcceptList]);
 
   return (
     <>
@@ -111,6 +128,16 @@ export default function SearchFriend() {
                 key={index}
                 reloadData={reloadData}
                 status={"ACCEPT"}
+              />
+            ))}
+          {friendWaitingAcceptList &&
+            friendWaitingAcceptList.length > 0 &&
+            friendWaitingAcceptList.map((value, index) => (
+              <FriendCardAdd
+                dataFriend={value}
+                key={index}
+                reloadData={reloadData}
+                status={"WAITING_ACCEPT"}
               />
             ))}
           {searchList &&

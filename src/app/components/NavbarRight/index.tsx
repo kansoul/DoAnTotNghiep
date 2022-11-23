@@ -1,12 +1,11 @@
 import Message from "app/container/Message";
 import { auth, db } from "app/services/firebase";
-import { reload } from "firebase/auth";
 import {
-  query,
-  where,
-  onSnapshot,
   collection,
   getDocs,
+  onSnapshot,
+  query,
+  where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -21,7 +20,6 @@ export default function NavBarRight() {
   const dataCollectionFriend = collection(db, "Friends");
   const dataCollectionUsers = collection(db, "Users");
   const [friendList, setFriendList] = useState<Friend[]>([]);
-  const [onChangeState, setChangeState] = useState<any>("");
   const [dataFriend, setDataFriend] = useState<any>([]);
 
   const reload = () => {
@@ -44,7 +42,6 @@ export default function NavBarRight() {
     );
     onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        setChangeState(change);
         if (change.type === "added") {
           data.push({ idDoc: change.doc.id, ...change.doc.data() });
         }
@@ -64,8 +61,11 @@ export default function NavBarRight() {
   }, [user]);
 
   useEffect(() => {
+    if (friendList) {
+      reload();
+    }
     // eslint-disable-next-line
-  }, [onChangeState]);
+  }, [friendList.length > 0]);
 
   useEffect(() => {
     const data: any = [];
@@ -79,8 +79,8 @@ export default function NavBarRight() {
       setDataFriend(dataUser);
     });
     // setDataFriend(data);
+    // eslint-disable-next-line
   }, [friendList.length > 0]);
-  console.log("dataFriend", dataFriend);
   return (
     <>
       <div>

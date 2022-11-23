@@ -89,19 +89,6 @@ export default function ProfilePage() {
                       </div>
                     </div>
                     <div className="control-block-button">
-                      <a
-                        href="35-YourAccount-FriendsRequests.html"
-                        className="btn btn-control bg-blue"
-                      >
-                        <svg className="olymp-happy-face-icon">
-                          <use xlinkHref="#olymp-happy-face-icon" />
-                        </svg>
-                      </a>
-                      <a href="/#" className="btn btn-control bg-purple">
-                        <svg className="olymp-chat---messages-icon">
-                          <use xlinkHref="#olymp-chat---messages-icon" />
-                        </svg>
-                      </a>
                       <div className="btn btn-control bg-primary more">
                         <svg className="olymp-settings-icon">
                           <use xlinkHref="#olymp-settings-icon" />
