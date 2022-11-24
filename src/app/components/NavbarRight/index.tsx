@@ -22,9 +22,6 @@ export default function NavBarRight() {
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [dataFriend, setDataFriend] = useState<any>([]);
 
-  const reload = () => {
-    fetchFriends();
-  };
   const fetchAccountInfor = async (uid: any, arr: any) => {
     const q = query(dataCollectionUsers, where("uuid", "==", uid));
     const querySnapshot = await getDocs(q);
@@ -33,40 +30,33 @@ export default function NavBarRight() {
     });
     return arr;
   };
-  const fetchFriends = async () => {
+
+  useEffect(() => {
     let data: any = [];
     const q = query(
       dataCollectionFriend,
       where("relation", "array-contains", user?.uid),
       where("status", "==", "ACCEPT")
     );
-    onSnapshot(q, (snapshot) => {
+    const test = onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
+          data = data.filter((val) => val.idDoc);
           data.push({ idDoc: change.doc.id, ...change.doc.data() });
         }
         if (change.type === "modified") {
-          reload();
+          data = data.filter((val) => val.idDoc !== change.doc.id);
+          data.push({ idDoc: change.doc.id, ...change.doc.data() });
         }
         if (change.type === "removed") {
-          reload();
+          data = data.filter((val) => val.idDoc !== change.doc.id);
         }
+        setFriendList(data);
       });
     });
-    setFriendList(data);
-  };
-  useEffect(() => {
-    fetchFriends();
+    return test;
     // eslint-disable-next-line
-  }, [user]);
-
-  useEffect(() => {
-    if (friendList) {
-      reload();
-    }
-    // eslint-disable-next-line
-  }, [friendList.length > 0]);
-
+  }, []);
   useEffect(() => {
     const data: any = [];
     friendList.forEach(async (value) => {
@@ -80,7 +70,7 @@ export default function NavBarRight() {
     });
     // setDataFriend(data);
     // eslint-disable-next-line
-  }, [friendList.length > 0]);
+  }, [friendList]);
   return (
     <>
       <div>
