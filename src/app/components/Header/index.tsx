@@ -1,11 +1,10 @@
-import Message from "app/container/Message";
 import { auth, db, logout } from "app/services/firebase";
 import {
+  collection,
+  getDocs,
+  onSnapshot,
   query,
   where,
-  getDocs,
-  collection,
-  onSnapshot,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -733,7 +732,7 @@ export default function Header() {
           }`}
         />
       </div>
-      <Message openChat={openChatBox} setOpenChat={setOpenChatBox} />
+      {/* <Message openChat={openChatBox} setOpenChat={setOpenChatBox} /> */}
     </>
   );
 }

@@ -1,4 +1,3 @@
-import Message from "app/container/Message";
 import { auth, db } from "app/services/firebase";
 import {
   collection,
@@ -14,7 +13,6 @@ import FriendCardChat from "./Component/FriendCardChat";
 import FriendChatDetail from "./Component/FriendChatDetail";
 
 export default function NavBarRight() {
-  const [openChat, setOpenChat] = useState<boolean>(false);
   const [openRightNav, setRightNav] = useState<boolean>(false);
   const [user] = useAuthState(auth);
   const dataCollectionFriend = collection(db, "Friends");
@@ -82,11 +80,7 @@ export default function NavBarRight() {
             <div className="scroll-custom" data-mcs-theme="dark">
               <ul className="chat-users">
                 {dataFriend.map((user) => (
-                  <FriendCardChat
-                    setOpenChat={setOpenChat}
-                    key={user.uuid}
-                    dataFriend={user}
-                  />
+                  <FriendCardChat key={user.uuid} dataFriend={user} />
                 ))}
               </ul>
             </div>
@@ -111,7 +105,7 @@ export default function NavBarRight() {
             className="fixed-sidebar-right sidebar--large"
             id="sidebar-right-1"
           >
-            <div className="mCustomScrollbar" data-mcs-theme="dark">
+            <div className="scroll-custom" data-mcs-theme="dark">
               <div className="ui-block-title ui-block-title-small">
                 <a href="/#" className="title">
                   Close Friends
@@ -119,11 +113,7 @@ export default function NavBarRight() {
               </div>
               <ul className="chat-users">
                 {dataFriend.map((user) => (
-                  <FriendChatDetail
-                    key={user.uuid}
-                    dataFriend={user}
-                    setOpenChat={setOpenChat}
-                  />
+                  <FriendChatDetail key={user.uuid} dataFriend={user} />
                 ))}
               </ul>
             </div>
@@ -170,294 +160,16 @@ export default function NavBarRight() {
             </span>
           </div>
           <div className="fixed-sidebar-right sidebar--large">
-            <div className="mCustomScrollbar" data-mcs-theme="dark">
+            <div className="scroll-custom" data-mcs-theme="dark">
               <div className="ui-block-title ui-block-title-small">
                 <a href="/#" className="title">
                   Close Friends
                 </a>
-                <a href="/#">Settings</a>
               </div>
               <ul className="chat-users">
-                <li className="inline-items js-chat-open">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      alt="author"
-                      src="img/avatar67-sm.webp"
-                      className="avatar"
-                      width={34}
-                      height={34}
-                    />
-                    <span className="icon-status online" />
-                  </div>
-                  <div className="author-status">
-                    <a href="/#" className="h6 author-name">
-                      Carol Summers
-                    </a>
-                    <span className="status">ONLINE</span>
-                  </div>
-                  <div className="more">
-                    <svg className="olymp-three-dots-icon">
-                      <use xlinkHref="#olymp-three-dots-icon" />
-                    </svg>
-                    <ul className="more-icons">
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="START CONVERSATION"
-                          className="olymp-comments-post-icon"
-                        >
-                          <use xlinkHref="#olymp-comments-post-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="ADD TO CONVERSATION"
-                          className="olymp-add-to-conversation-icon"
-                        >
-                          <use xlinkHref="#olymp-add-to-conversation-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="BLOCK FROM CHAT"
-                          className="olymp-block-from-chat-icon"
-                        >
-                          <use xlinkHref="#olymp-block-from-chat-icon" />
-                        </svg>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="inline-items js-chat-open">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      alt="author"
-                      src="img/avatar62-sm.webp"
-                      width={34}
-                      height={34}
-                      className="avatar"
-                    />
-                    <span className="icon-status online" />
-                  </div>
-                  <div className="author-status">
-                    <a href="/#" className="h6 author-name">
-                      Mathilda Brinker
-                    </a>
-                    <span className="status">AT WORK!</span>
-                  </div>
-                  <div className="more">
-                    <svg className="olymp-three-dots-icon">
-                      <use xlinkHref="#olymp-three-dots-icon" />
-                    </svg>
-                    <ul className="more-icons">
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="START CONVERSATION"
-                          className="olymp-comments-post-icon"
-                        >
-                          <use xlinkHref="#olymp-comments-post-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="ADD TO CONVERSATION"
-                          className="olymp-add-to-conversation-icon"
-                        >
-                          <use xlinkHref="#olymp-add-to-conversation-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="BLOCK FROM CHAT"
-                          className="olymp-block-from-chat-icon"
-                        >
-                          <use xlinkHref="#olymp-block-from-chat-icon" />
-                        </svg>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="inline-items js-chat-open">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      alt="author"
-                      src="img/avatar68-sm.webp"
-                      className="avatar"
-                      width={34}
-                      height={34}
-                    />
-                    <span className="icon-status online" />
-                  </div>
-                  <div className="author-status">
-                    <a href="/#" className="h6 author-name">
-                      Carol Summers
-                    </a>
-                    <span className="status">ONLINE</span>
-                  </div>
-                  <div className="more">
-                    <svg className="olymp-three-dots-icon">
-                      <use xlinkHref="#olymp-three-dots-icon" />
-                    </svg>
-                    <ul className="more-icons">
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="START CONVERSATION"
-                          className="olymp-comments-post-icon"
-                        >
-                          <use xlinkHref="#olymp-comments-post-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="ADD TO CONVERSATION"
-                          className="olymp-add-to-conversation-icon"
-                        >
-                          <use xlinkHref="#olymp-add-to-conversation-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="BLOCK FROM CHAT"
-                          className="olymp-block-from-chat-icon"
-                        >
-                          <use xlinkHref="#olymp-block-from-chat-icon" />
-                        </svg>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="inline-items js-chat-open">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      alt="author"
-                      src="img/avatar69-sm.webp"
-                      className="avatar"
-                      width={34}
-                      height={34}
-                    />
-                    <span className="icon-status away" />
-                  </div>
-                  <div className="author-status">
-                    <a href="/#" className="h6 author-name">
-                      Michael Maximoff
-                    </a>
-                    <span className="status">AWAY</span>
-                  </div>
-                  <div className="more">
-                    <svg className="olymp-three-dots-icon">
-                      <use xlinkHref="#olymp-three-dots-icon" />
-                    </svg>
-                    <ul className="more-icons">
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="START CONVERSATION"
-                          className="olymp-comments-post-icon"
-                        >
-                          <use xlinkHref="#olymp-comments-post-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="ADD TO CONVERSATION"
-                          className="olymp-add-to-conversation-icon"
-                        >
-                          <use xlinkHref="#olymp-add-to-conversation-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="BLOCK FROM CHAT"
-                          className="olymp-block-from-chat-icon"
-                        >
-                          <use xlinkHref="#olymp-block-from-chat-icon" />
-                        </svg>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="inline-items js-chat-open">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      alt="author"
-                      src="img/avatar70-sm.webp"
-                      className="avatar"
-                      width={34}
-                      height={34}
-                    />
-                    <span className="icon-status disconected" />
-                  </div>
-                  <div className="author-status">
-                    <a href="/#" className="h6 author-name">
-                      Rachel Howlett
-                    </a>
-                    <span className="status">OFFLINE</span>
-                  </div>
-                  <div className="more">
-                    <svg className="olymp-three-dots-icon">
-                      <use xlinkHref="#olymp-three-dots-icon" />
-                    </svg>
-                    <ul className="more-icons">
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="START CONVERSATION"
-                          className="olymp-comments-post-icon"
-                        >
-                          <use xlinkHref="#olymp-comments-post-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="ADD TO CONVERSATION"
-                          className="olymp-add-to-conversation-icon"
-                        >
-                          <use xlinkHref="#olymp-add-to-conversation-icon" />
-                        </svg>
-                      </li>
-                      <li>
-                        <svg
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="top"
-                          data-bs-original-title="BLOCK FROM CHAT"
-                          className="olymp-block-from-chat-icon"
-                        >
-                          <use xlinkHref="#olymp-block-from-chat-icon" />
-                        </svg>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
+                {dataFriend.map((user) => (
+                  <FriendChatDetail key={user.uuid} dataFriend={user} />
+                ))}
               </ul>
             </div>
             <div className="search-friend inline-items">
@@ -473,18 +185,14 @@ export default function NavBarRight() {
                 style={{ cursor: "pointer" }}
                 className="js-sidebar-open"
               >
-                <img
-                  src="svg-icons/close.svg"
-                  alt="Close"
-                  width={30}
-                  height={30}
-                />
+                <svg className="olymp-close-icon">
+                  <use xlinkHref="#olymp-close-icon" />
+                </svg>
               </span>
             </div>
           </div>
         </div>
       </div>
-      <Message openChat={openChat} setOpenChat={setOpenChat} />
     </>
   );
 }

@@ -1,8 +1,101 @@
-export default function Message(props: {
+import { auth, db } from "app/services/firebase";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Message } from "types/Message";
+import { dateTimeFormat } from "utils/datetime";
+import ChatCard from "./component/ChatCard";
+
+export default function MessageScreen(props: {
   openChat: boolean;
   setOpenChat: (value: boolean) => void;
+  dataFriend: any;
 }) {
-  const { openChat, setOpenChat } = props;
+  const { openChat, setOpenChat, dataFriend } = props;
+  const [dataMessage, setDataMessage] = useState<Message | null>(null);
+  const dataCollectionMessage = collection(db, "Message");
+  const [user] = useAuthState(auth);
+  const [valueMessage, setValueMessage] = useState<string>("");
+  const dataCollectionUsers = collection(db, "Users");
+  const [profile, setProfile] = useState<any>();
+
+  const fetchAccountInfor = async () => {
+    const q = query(dataCollectionUsers, where("uuid", "==", user?.uid));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setProfile({ id: doc.id, ...doc.data() });
+    });
+  };
+  useEffect(() => {
+    fetchAccountInfor();
+    // eslint-disable-next-line
+  }, [user]);
+  useEffect(() => {
+    let data: any = {};
+    const q = query(
+      dataCollectionMessage,
+      where("relationMessage", "in", [
+        [user?.uid, dataFriend?.uuid],
+        [dataFriend?.uuid, user?.uid],
+      ])
+    );
+    const test = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          data = { idDoc: change.doc.id, ...change.doc.data() };
+        }
+        if (change.type === "modified") {
+          data = { idDoc: change.doc.id, ...change.doc.data() };
+        }
+        setDataMessage(data);
+      });
+    });
+    return test;
+    // eslint-disable-next-line
+  }, []);
+  const handleSendMessage = () => {
+    if (dataMessage && dataMessage.idDoc) {
+      const dataCollection = doc(db, "Message", dataMessage.idDoc);
+
+      updateDoc(dataCollection, {
+        message: arrayUnion({
+          receiver: {
+            firstName: dataFriend?.firstName,
+            imgURL: dataFriend?.imgUrl || "",
+            lastName: dataFriend?.lastName,
+            uid: dataFriend?.uuid,
+          },
+          sender: {
+            firstName: profile?.firstName,
+            imgURL: profile?.imgUrl || "",
+            lastName: profile?.lastName,
+            uid: user?.uid,
+          },
+          sendAt: new Date(),
+          status: "UNSEND",
+          text: valueMessage,
+          type: "TEXT",
+        }),
+      })
+        .then(() => {
+          setValueMessage("");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+  console.log(dataMessage);
   return (
     <div
       className={`ui-block popup-chat popup-chat-responsive ${
@@ -30,407 +123,61 @@ export default function Message(props: {
           </div>
         </div>
         <div className="modal-body">
-          <div className="mCustomScrollbar">
-            <ul className="notification-list chat-message chat-message-field">
-              <li>
-                <div className="author-thumb">
-                  <img
-                    loading="lazy"
-                    src="img/avatar14-sm.webp"
-                    width={28}
-                    height={28}
-                    alt="author"
-                    className="mCS_img_loaded"
-                  />
-                </div>
-                <div className="notification-event">
-                  <span className="chat-message-item">
-                    Hi James! Please remember to buy the food for tomorrow! I’m
-                    gonna be handling the gifts and Jake’s gonna get the drinks
-                  </span>
-                  <span className="notification-date">
-                    <time
-                      className="entry-date updated"
-                      dateTime="2004-07-24T18:18"
-                    >
-                      Yesterday at 8:10pm
-                    </time>
-                  </span>
-                </div>
-              </li>
-              <li>
-                <div className="author-thumb">
-                  <img
-                    loading="lazy"
-                    src="img/author-page.webp"
-                    width={36}
-                    height={36}
-                    alt="author"
-                    className="mCS_img_loaded"
-                  />
-                </div>
-                <div className="notification-event">
-                  <span className="chat-message-item">
-                    Don’t worry Mathilda!
-                  </span>
-                  <span className="chat-message-item">
-                    I already bought everything
-                  </span>
-                  <span className="notification-date">
-                    <time
-                      className="entry-date updated"
-                      dateTime="2004-07-24T18:18"
-                    >
-                      Yesterday at 8:29pm
-                    </time>
-                  </span>
-                </div>
-              </li>
-              <li>
-                <div className="author-thumb">
-                  <img
-                    loading="lazy"
-                    src="img/avatar14-sm.webp"
-                    width={28}
-                    height={28}
-                    alt="author"
-                    className="mCS_img_loaded"
-                  />
-                </div>
-                <div className="notification-event">
-                  <span className="chat-message-item">
-                    Hi James! Please remember to buy the food for tomorrow! I’m
-                    gonna be handling the gifts and Jake’s gonna get the drinks
-                  </span>
-                  <span className="notification-date">
-                    <time
-                      className="entry-date updated"
-                      dateTime="2004-07-24T18:18"
-                    >
-                      Yesterday at 8:10pm
-                    </time>
-                  </span>
-                </div>
-              </li>
+          <div className="scroll-custom" style={{ height: "300px" }}>
+            <ul>
+              {dataMessage?.message &&
+                dataMessage?.message.length > 0 &&
+                dataMessage?.message.map((val, index) => (
+                  <ChatCard dataChat={val} key={index} />
+                ))}
             </ul>
           </div>
           <form className="need-validation">
             <div className="form-group">
               <textarea
-                className="form-control"
+                className="form-control scroll-custom"
                 placeholder="Press enter to post..."
-                defaultValue={""}
+                value={valueMessage}
+                onChange={(e) => setValueMessage(e.target.value)}
+                style={{ paddingRight: "80px" }}
               />
               <div className="add-options-message">
-                <a href="/#" className="options-message">
+                <span className="options-message">
                   <svg className="olymp-computer-icon">
                     <use xlinkHref="#olymp-computer-icon" />
                   </svg>
-                </a>
-                <div className="options-message smile-block">
-                  <svg className="olymp-happy-sticker-icon">
-                    <use xlinkHref="#olymp-happy-sticker-icon" />
+                </span>
+                <span
+                  className="options-message"
+                  onClick={() => handleSendMessage()}
+                >
+                  <svg
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0,0,256,256"
+                    style={{ width: "30px", height: "30px" }}
+                  >
+                    <g
+                      fill="#71a4ec"
+                      fill-rule="nonzero"
+                      stroke="none"
+                      stroke-width="1"
+                      stroke-linecap="butt"
+                      stroke-linejoin="miter"
+                      stroke-miterlimit="10"
+                      stroke-dasharray=""
+                      stroke-dashoffset="0"
+                      font-family="none"
+                      font-weight="none"
+                      font-size="none"
+                      text-anchor="none"
+                    >
+                      <g transform="scale(8.53333,8.53333)">
+                        <path d="M26,3c-0.09597,0.00066 -0.19135,0.01513 -0.2832,0.04297c-0.02704,0.00734 -0.05375,0.01581 -0.08008,0.02539l-21.98633,6.99219v0.00391c-0.39063,0.14577 -0.64983,0.5186 -0.65039,0.93555c0.00074,0.34922 0.18361,0.67277 0.48242,0.85352l6.68164,5.30078l13.20899,-10.52734l-10.52734,13.20898l5.29688,6.67773c0.18051,0.3015 0.50602,0.48613 0.85742,0.48633c0.41694,-0.00056 0.78978,-0.25976 0.93555,-0.65039h0.00391l6.99805,-22.00586c0.00715,-0.01997 0.01366,-0.04016 0.01953,-0.06055c0.02784,-0.09185 0.04231,-0.18723 0.04297,-0.2832c0,-0.55228 -0.44772,-1 -1,-1z"></path>
+                      </g>
+                    </g>
                   </svg>
-                  <ul className="more-dropdown more-with-triangle triangle-bottom-right">
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat1.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat2.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat3.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat4.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat5.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat6.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat7.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat8.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat9.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat10.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat11.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat12.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat13.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat14.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat15.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat16.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat17.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat18.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat19.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat20.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat21.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat22.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat23.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat24.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat25.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat26.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/#">
-                        <img
-                          loading="lazy"
-                          src="img/icon-chat27.webp"
-                          alt="icon"
-                          width={20}
-                          height={20}
-                        />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                </span>
               </div>
             </div>
           </form>

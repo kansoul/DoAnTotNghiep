@@ -60,11 +60,16 @@ export default function FriendCardAdd(props: {
   };
   const acceptFriend = async () => {
     const data: any = await fetchFriendRequest(dataFriend?.uuid);
-    const dataCollection = doc(db, "Friends", data[0]?.idDoc);
-    updateDoc(dataCollection, {
+    const dataCollectionFriends = doc(db, "Friends", data[0]?.idDoc);
+    updateDoc(dataCollectionFriends, {
       status: "ACCEPT",
     })
       .then(() => {
+        addDoc(collection(db, "Message"), {
+          id: uuidv4(),
+          message: [],
+          relationMessage: data[0].relation,
+        });
         console.log("Successfully updated doc");
         reloadData();
       })

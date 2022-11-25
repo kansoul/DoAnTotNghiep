@@ -1,5 +1,6 @@
 import { db } from "app/services/firebase";
 import {
+  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -9,6 +10,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function FriendCard(props: { valueFriend: any; reload: any }) {
   const { valueFriend, reload } = props;
@@ -32,10 +34,16 @@ export default function FriendCard(props: { valueFriend: any; reload: any }) {
 
   const addFriend = () => {
     const dataCollection = doc(db, "Friends", valueFriend?.idDoc);
+
     updateDoc(dataCollection, {
       status: "ACCEPT",
     })
       .then(() => {
+        addDoc(collection(db, "Message"), {
+          id: uuidv4(),
+          message: [],
+          relationMessage: valueFriend?.relation,
+        });
         console.log("Successfully updated doc");
         reload();
       })
