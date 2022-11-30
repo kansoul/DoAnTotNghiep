@@ -95,7 +95,7 @@ export default function MessageScreen(props: {
         });
     }
   };
-  console.log(dataMessage);
+
   return (
     <div
       className={`ui-block popup-chat popup-chat-responsive ${
@@ -159,18 +159,18 @@ export default function MessageScreen(props: {
                   >
                     <g
                       fill="#71a4ec"
-                      fill-rule="nonzero"
+                      fillRule="nonzero"
                       stroke="none"
-                      stroke-width="1"
-                      stroke-linecap="butt"
-                      stroke-linejoin="miter"
-                      stroke-miterlimit="10"
-                      stroke-dasharray=""
-                      stroke-dashoffset="0"
-                      font-family="none"
-                      font-weight="none"
-                      font-size="none"
-                      text-anchor="none"
+                      strokeWidth="1"
+                      strokeLinecap="butt"
+                      strokeLinejoin="miter"
+                      strokeMiterlimit="10"
+                      strokeDasharray=""
+                      strokeDashoffset="0"
+                      fontFamily="none"
+                      fontWeight="none"
+                      fontSize="none"
+                      textAnchor="none"
                     >
                       <g transform="scale(8.53333,8.53333)">
                         <path d="M26,3c-0.09597,0.00066 -0.19135,0.01513 -0.2832,0.04297c-0.02704,0.00734 -0.05375,0.01581 -0.08008,0.02539l-21.98633,6.99219v0.00391c-0.39063,0.14577 -0.64983,0.5186 -0.65039,0.93555c0.00074,0.34922 0.18361,0.67277 0.48242,0.85352l6.68164,5.30078l13.20899,-10.52734l-10.52734,13.20898l5.29688,6.67773c0.18051,0.3015 0.50602,0.48613 0.85742,0.48633c0.41694,-0.00056 0.78978,-0.25976 0.93555,-0.65039h0.00391l6.99805,-22.00586c0.00715,-0.01997 0.01366,-0.04016 0.01953,-0.06055c0.02784,-0.09185 0.04231,-0.18723 0.04297,-0.2832c0,-0.55228 -0.44772,-1 -1,-1z"></path>

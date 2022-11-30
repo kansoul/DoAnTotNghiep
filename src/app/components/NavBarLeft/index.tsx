@@ -90,7 +90,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="20-CalendarAndEvents-MonthlyCalendar.html">
+                <a href="/diary">
                   <svg
                     className="olymp-calendar-icon left-menu-icon"
                     data-bs-toggle="tooltip"
@@ -243,7 +243,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="20-CalendarAndEvents-MonthlyCalendar.html">
+                <a href="/diary">
                   <svg
                     className="olymp-calendar-icon left-menu-icon"
                     data-bs-toggle="tooltip"

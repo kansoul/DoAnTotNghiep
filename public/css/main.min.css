@@ -24,6 +24,22 @@ ul {
 .scroll-custom::-webkit-scrollbar-thumb:hover {
   background: #fff;
 };
+.rdw-editor-main {
+  overflow-y: scroll !important;
+}
+.rdw-editor-main::-webkit-scrollbar {
+  width: 2px;
+};
+.rdw-editor-main::-webkit-scrollbar-track {
+  background: #fff;
+};
+.rdw-editor-main::-webkit-scrollbar-thumb {
+  background: #fff;
+};
+.rdw-editor-main::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+};
+
 .fc-unselectable,
 .irs {
   -webkit-touch-callout: none;
@@ -6615,6 +6631,12 @@ figure {
 .faqs-popup .collapse p {
   margin-bottom: 0;
 }
+.default-diary a {
+  color: #000;
+}
+.default-diary {
+  background: #00000078;
+}
 .add-option svg {
   fill: #888da8;
   fill: var(--olympus-body-font-color);
@@ -6755,7 +6777,7 @@ figure {
   overflow: hidden;
 }
 .create-event {
-  width: 470px;
+  width: 80%;
 }
 .create-event .icon-close {
   margin-top: 0;
@@ -6767,9 +6789,9 @@ figure {
   right: -301px;
   padding: 0;
 }
-.create-event .more-dropdown a {
+/* .create-event .more-dropdown a {
   display: inline-block;
-}
+} */
 .create-event .more-dropdown input {
   border: 0;
   border-bottom: 1px solid #e6ecf5;

@@ -727,7 +727,8 @@ export default function Header() {
               param === "/friendbirthday" ||
               param === "/chart" ||
               param === "/profile" ||
-              param === "/accountprofile") &&
+              param === "/accountprofile" ||
+              param === "/diary") &&
             "header-spacer-small"
           }`}
         />

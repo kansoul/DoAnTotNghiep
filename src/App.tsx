@@ -1,5 +1,6 @@
 import AccountProfile from "app/container/AccountProfile";
 import Chart from "app/container/Chart";
+import Diary from "app/container/Diary";
 import FriendsBirthday from "app/container/FriendsBirthday";
 import LoginOrSignin from "app/container/LoginOrSignin";
 import MusicPlay from "app/container/MusicPlay";
@@ -24,23 +25,15 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="*" element={<Navigate replace to="/profile" />} />
-              <Route path="/profile" element={<ProfilePage />}></Route>
-              <Route path="/newsfeed" element={<NewsFeed />}></Route>
-              <Route path="/musicplay" element={<MusicPlay />}></Route>
-              <Route
-                path="/friendbirthday"
-                element={<FriendsBirthday />}
-              ></Route>
-              <Route path="/chart" element={<Chart />}></Route>
-              <Route
-                path="/accountprofile"
-                element={<AccountProfile />}
-              ></Route>
-              <Route path="/searchfriend" element={<SearchFriend />}></Route>
-              <Route
-                path="/profileoffriend"
-                element={<ProfileOfFriend />}
-              ></Route>
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/newsfeed" element={<NewsFeed />} />
+              <Route path="/musicplay" element={<MusicPlay />} />
+              <Route path="/friendbirthday" element={<FriendsBirthday />} />
+              <Route path="/chart" element={<Chart />} />
+              <Route path="/accountprofile" element={<AccountProfile />} />
+              <Route path="/searchfriend" element={<SearchFriend />} />
+              <Route path="/profileoffriend" element={<ProfileOfFriend />} />
+              <Route path="/diary" element={<Diary />} />
             </Routes>
           </BrowserRouter>
         ))}
