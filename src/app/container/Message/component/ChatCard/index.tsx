@@ -5,7 +5,6 @@ import { dateTimeFormat } from "utils/datetime";
 export default function ChatCard(props: { dataChat: any }) {
   const { dataChat } = props;
   const [user] = useAuthState(auth);
-  console.log(dataChat);
   return user?.uid === dataChat?.sender?.uid ? (
     <li style={{ display: "flex", padding: "5px" }}>
       <div

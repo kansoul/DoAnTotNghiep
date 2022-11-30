@@ -5,4 +5,9 @@ const dateTimeFormat = (
   targetFormat: string = "yyyy/MM/dd HH:mm:ss"
 ) => format(date, targetFormat);
 
-export { dateTimeFormat };
+const dateTimeFormatVietNam = (
+  date: Date,
+  targetFormat: string = "dd/MM/yyyy"
+) => format(date, targetFormat);
+
+export { dateTimeFormat, dateTimeFormatVietNam };

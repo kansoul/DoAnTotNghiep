@@ -713,7 +713,18 @@ export default function Header() {
                     className="form-control"
                     placeholder="Search here people or pages..."
                     type="text"
+                    onChange={(e) => setSearchFriend(e.target.value)}
+                    value={searchFriend}
                   />
+                  <button
+                    onClick={() => {
+                      navigate(`/searchfriend?name=${searchFriend}`);
+                    }}
+                  >
+                    <svg className="olymp-magnifying-glass-icon">
+                      <use xlinkHref="#olymp-magnifying-glass-icon" />
+                    </svg>
+                  </button>
                 </div>
               </form>
             </div>

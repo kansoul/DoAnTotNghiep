@@ -9,10 +9,9 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Message } from "types/Message";
-import { dateTimeFormat } from "utils/datetime";
 import ChatCard from "./component/ChatCard";
 
 export default function MessageScreen(props: {
@@ -95,6 +94,14 @@ export default function MessageScreen(props: {
         });
     }
   };
+  const messagesEndRef = useRef<any>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [dataMessage]);
 
   return (
     <div
@@ -130,6 +137,7 @@ export default function MessageScreen(props: {
                 dataMessage?.message.map((val, index) => (
                   <ChatCard dataChat={val} key={index} />
                 ))}
+              <div ref={messagesEndRef} />
             </ul>
           </div>
           <form className="need-validation">

@@ -14,3 +14,10 @@ export const removeSameObject = (arr: any) => {
   }, []);
   return result;
 };
+
+export const filterDiarys = (diary: any) => {
+  const data = diary.sort(
+    (a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  return data;
+};
