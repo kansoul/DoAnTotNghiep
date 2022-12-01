@@ -19,7 +19,7 @@ export default function FriendCard(props: { valueFriend: any; reload: any }) {
   const fetchAccountInfor = async () => {
     const q = query(
       dataCollectionUsers,
-      where("uuid", "==", valueFriend?.request)
+      where("uid", "==", valueFriend?.request)
     );
 
     const querySnapshot = await getDocs(q);
@@ -43,6 +43,7 @@ export default function FriendCard(props: { valueFriend: any; reload: any }) {
           id: uuidv4(),
           message: [],
           relationMessage: valueFriend?.relation,
+          lastMessage: {},
         });
         console.log("Successfully updated doc");
         reload();

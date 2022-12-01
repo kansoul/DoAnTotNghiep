@@ -53,7 +53,7 @@ export default function SearchFriend() {
     const querySnapshot = await getDocs(q);
     let data: any = [];
     querySnapshot.forEach((doc: any) => {
-      if (doc.data().uuid !== user?.uid) {
+      if (doc.data().uid !== user?.uid) {
         data.push(doc.data());
       }
     });
@@ -79,7 +79,7 @@ export default function SearchFriend() {
     searchList.forEach((valSearch) => {
       if (friendList.length > 0) {
         friendList.forEach((element) => {
-          if (element?.relation?.includes(valSearch.uuid)) {
+          if (element?.relation?.includes(valSearch.uid)) {
             if (element?.status === "WAITING") {
               if (element?.request === user?.uid) {
                 setFriendWaitingList((prevArray) => [...prevArray, valSearch]);
@@ -98,17 +98,17 @@ export default function SearchFriend() {
   useEffect(() => {
     const searchFriend = searchList.filter(function (cv) {
       return !friendWaitingList.find(function (e) {
-        return e.uuid === cv.uuid;
+        return e.uid === cv.uid;
       });
     });
     const removeFriendList = searchFriend.filter(function (cv) {
       return !friendAddList.find(function (e) {
-        return e.uuid === cv.uuid;
+        return e.uid === cv.uid;
       });
     });
     const removeWaitingAcceptList = removeFriendList.filter(function (cv) {
       return !friendWaitingAcceptList.find(function (e) {
-        return e.uuid === cv.uuid;
+        return e.uid === cv.uid;
       });
     });
     setSearchList(removeWaitingAcceptList);

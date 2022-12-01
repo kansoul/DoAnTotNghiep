@@ -15,7 +15,7 @@ export default function ProfileOfFriend() {
   const [user] = useAuthState(auth);
 
   const fetchAccountInfor = async () => {
-    const q = query(dataCollectionUsers, where("uuid", "==", userID));
+    const q = query(dataCollectionUsers, where("uid", "==", userID));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -23,7 +23,7 @@ export default function ProfileOfFriend() {
     });
   };
   const fetchHobbies = async () => {
-    const q = query(dataCollectionHobbies, where("uuid", "==", userID));
+    const q = query(dataCollectionHobbies, where("uid", "==", userID));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

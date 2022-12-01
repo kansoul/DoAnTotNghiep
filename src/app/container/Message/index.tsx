@@ -28,7 +28,7 @@ export default function MessageScreen(props: {
   const [profile, setProfile] = useState<any>();
 
   const fetchAccountInfor = async () => {
-    const q = query(dataCollectionUsers, where("uuid", "==", user?.uid));
+    const q = query(dataCollectionUsers, where("uid", "==", user?.uid));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -44,8 +44,8 @@ export default function MessageScreen(props: {
     const q = query(
       dataCollectionMessage,
       where("relationMessage", "in", [
-        [user?.uid, dataFriend?.uuid],
-        [dataFriend?.uuid, user?.uid],
+        [user?.uid, dataFriend?.uid],
+        [dataFriend?.uid, user?.uid],
       ])
     );
     const test = onSnapshot(q, (snapshot) => {
@@ -72,7 +72,7 @@ export default function MessageScreen(props: {
             firstName: dataFriend?.firstName,
             imgURL: dataFriend?.imgUrl || "",
             lastName: dataFriend?.lastName,
-            uid: dataFriend?.uuid,
+            uid: dataFriend?.uid,
           },
           sender: {
             firstName: profile?.firstName,
@@ -85,6 +85,24 @@ export default function MessageScreen(props: {
           text: valueMessage,
           type: "TEXT",
         }),
+        lastMessage: {
+          receiver: {
+            firstName: dataFriend?.firstName,
+            imgURL: dataFriend?.imgUrl || "",
+            lastName: dataFriend?.lastName,
+            uid: dataFriend?.uid,
+          },
+          sender: {
+            firstName: profile?.firstName,
+            imgURL: profile?.imgUrl || "",
+            lastName: profile?.lastName,
+            uid: user?.uid,
+          },
+          sendAt: new Date(),
+          status: "UNSEND",
+          text: valueMessage,
+          type: "TEXT",
+        },
       })
         .then(() => {
           setValueMessage("");

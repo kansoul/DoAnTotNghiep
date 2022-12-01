@@ -40,7 +40,7 @@ const registerWithEmailAndPassword = async (data: any) => {
     );
     const user = res.user;
     await addDoc(collection(db, "Users"), {
-      uuid: user.uid,
+      uid: user.uid,
       birthday: data.birthday,
       firstName: data.firstName,
       lastName: data.lastName,
@@ -48,7 +48,7 @@ const registerWithEmailAndPassword = async (data: any) => {
       email: data.email,
     });
     await addDoc(collection(db, "HobbiesAndInterests"), {
-      uuid: user.uid,
+      uid: user.uid,
     });
   } catch (err: any) {
     console.error(err);

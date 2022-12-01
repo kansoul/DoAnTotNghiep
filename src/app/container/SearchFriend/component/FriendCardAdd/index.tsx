@@ -45,7 +45,7 @@ export default function FriendCardAdd(props: {
   const handleAddFriend = async () => {
     const data = {
       id: uuidv4(),
-      relation: [user?.uid, dataFriend?.uuid],
+      relation: [user?.uid, dataFriend?.uid],
       request: user?.uid,
       status: "WAITING",
       timeShape: new Date(),
@@ -59,7 +59,7 @@ export default function FriendCardAdd(props: {
     }
   };
   const acceptFriend = async () => {
-    const data: any = await fetchFriendRequest(dataFriend?.uuid);
+    const data: any = await fetchFriendRequest(dataFriend?.uid);
     const dataCollectionFriends = doc(db, "Friends", data[0]?.idDoc);
     updateDoc(dataCollectionFriends, {
       status: "ACCEPT",
@@ -69,6 +69,7 @@ export default function FriendCardAdd(props: {
           id: uuidv4(),
           message: [],
           relationMessage: data[0].relation,
+          lastMessage: {},
         });
         console.log("Successfully updated doc");
         reloadData();

@@ -42,7 +42,7 @@ export default function AccountInformation() {
       id: doc.id,
       ...doc.data(),
     }));
-    setDefaultValues(result.find((item: any) => item.uuid === user?.uid));
+    setDefaultValues(result.find((item: any) => item.uid === user?.uid));
   };
   useEffect(() => {
     fetchAccountInfor();

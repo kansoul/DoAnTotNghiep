@@ -36,7 +36,7 @@ export default function HobbiesAndInterests() {
   const [user] = useAuthState(auth);
 
   const fetchHobbiesAndInterests = async () => {
-    const q = query(dataCollection, where("uuid", "==", user?.uid));
+    const q = query(dataCollection, where("uid", "==", user?.uid));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

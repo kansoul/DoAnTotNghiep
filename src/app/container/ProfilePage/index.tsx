@@ -20,7 +20,7 @@ export default function ProfilePage() {
   const [user] = useAuthState(auth);
 
   const fetchAccountInfor = async () => {
-    const q = query(dataCollectionUsers, where("uuid", "==", user?.uid));
+    const q = query(dataCollectionUsers, where("uid", "==", user?.uid));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -28,7 +28,7 @@ export default function ProfilePage() {
     });
   };
   const fetchHobbies = async () => {
-    const q = query(dataCollectionHobbies, where("uuid", "==", user?.uid));
+    const q = query(dataCollectionHobbies, where("uid", "==", user?.uid));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

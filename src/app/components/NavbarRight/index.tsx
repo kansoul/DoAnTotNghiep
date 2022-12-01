@@ -18,15 +18,17 @@ export default function NavBarRight() {
   const dataCollectionFriend = collection(db, "Friends");
   const dataCollectionUsers = collection(db, "Users");
   const [friendList, setFriendList] = useState<Friend[]>([]);
+
   const [dataFriend, setDataFriend] = useState<any>([]);
 
-  const fetchAccountInfor = async (uid: any, arr: any) => {
-    const q = query(dataCollectionUsers, where("uuid", "==", uid));
+  const fetchAccountInfor = async (uid: any) => {
+    let data: any;
+    const q = query(dataCollectionUsers, where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      arr.push({ idDoc: doc.id, ...doc.data() });
+      data = { idDoc: doc.id, ...doc.data() };
     });
-    return arr;
+    return data;
   };
 
   useEffect(() => {
@@ -54,21 +56,22 @@ export default function NavBarRight() {
     });
     return test;
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
   useEffect(() => {
-    const data: any = [];
+    setDataFriend([]);
     friendList.forEach(async (value) => {
       const dataUID: any = value.relation;
       var index = dataUID.indexOf(user?.uid);
       if (index !== -1) {
         dataUID.splice(index, 1);
       }
-      const dataUser: any = await fetchAccountInfor(dataUID[0], data);
-      setDataFriend(dataUser);
+      await fetchAccountInfor(dataUID[0]).then((val) =>
+        setDataFriend((oldArray) => [...oldArray, val])
+      );
     });
-    // setDataFriend(data);
     // eslint-disable-next-line
-  }, [friendList]);
+  }, [friendList, user]);
+
   return (
     <>
       <div>
@@ -79,9 +82,11 @@ export default function NavBarRight() {
           >
             <div className="scroll-custom" data-mcs-theme="dark">
               <ul className="chat-users">
-                {dataFriend.map((user) => (
-                  <FriendCardChat key={user.uuid} dataFriend={user} />
-                ))}
+                {dataFriend &&
+                  dataFriend?.length > 0 &&
+                  dataFriend.map((user) => (
+                    <FriendCardChat key={user.uid} dataFriend={user} />
+                  ))}
               </ul>
             </div>
             <div className="search-friend inline-items">
@@ -113,7 +118,7 @@ export default function NavBarRight() {
               </div>
               <ul className="chat-users">
                 {dataFriend.map((user) => (
-                  <FriendChatDetail key={user.uuid} dataFriend={user} />
+                  <FriendChatDetail key={user.uid} dataFriend={user} />
                 ))}
               </ul>
             </div>
@@ -168,7 +173,7 @@ export default function NavBarRight() {
               </div>
               <ul className="chat-users">
                 {dataFriend.map((user) => (
-                  <FriendChatDetail key={user.uuid} dataFriend={user} />
+                  <FriendChatDetail key={user.uid} dataFriend={user} />
                 ))}
               </ul>
             </div>
