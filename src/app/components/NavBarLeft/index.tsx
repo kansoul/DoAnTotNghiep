@@ -53,6 +53,19 @@ export default function NavBarLeft() {
                   </svg>
                 </a>
               </li>
+
+              <li>
+                <a href="/todos">
+                  <svg
+                    className="olymp-manage-widgets-icon left-menu-icon"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Manage Widgets"
+                  >
+                    <use xlinkHref="#olymp-manage-widgets-icon" />
+                  </svg>
+                </a>
+              </li>
               <li>
                 <a href="17-FriendGroups.html">
                   <svg
@@ -134,18 +147,6 @@ export default function NavBarLeft() {
                     data-bs-original-title="Account Stats"
                   >
                     <use xlinkHref="#olymp-stats-icon" />
-                  </svg>
-                </a>
-              </li>
-              <li>
-                <a href="27-ManageWidgets.html">
-                  <svg
-                    className="olymp-manage-widgets-icon left-menu-icon"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-bs-original-title="Manage Widgets"
-                  >
-                    <use xlinkHref="#olymp-manage-widgets-icon" />
                   </svg>
                 </a>
               </li>

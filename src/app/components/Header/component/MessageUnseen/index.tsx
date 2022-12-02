@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { auth } from "app/services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import LastMesenger from "./component/LastMesenger";

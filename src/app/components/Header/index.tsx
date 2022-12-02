@@ -114,6 +114,7 @@ export default function Header() {
       });
     });
     return lastMessages;
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -623,6 +624,7 @@ export default function Header() {
               param === "/chart" ||
               param === "/profile" ||
               param === "/accountprofile" ||
+              param === "/profileoffriend" ||
               param === "/diary") &&
             "header-spacer-small"
           }`}

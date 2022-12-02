@@ -1,12 +1,5 @@
 import { auth, db } from "app/services/firebase";
-import { reload } from "firebase/auth";
-import {
-  doc,
-  updateDoc,
-  addDoc,
-  collection,
-  arrayUnion,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { dateTimeFormat } from "utils/datetime";
 

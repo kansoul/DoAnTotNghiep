@@ -9,6 +9,10 @@ ul {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.todo {
+  display: flex;
+  flex-wrap: wrap;
+}
 .scroll-custom {
   overflow-y: scroll !important;
 }

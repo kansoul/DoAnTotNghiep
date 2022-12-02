@@ -1,10 +1,12 @@
 import { auth } from "app/services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 import { dateTimeFormat } from "utils/datetime";
 
 export default function ChatCard(props: { dataChat: any }) {
   const { dataChat } = props;
   const [user] = useAuthState(auth);
+  const navigator = useNavigate();
   return user?.uid === dataChat?.sender?.uid ? (
     <li style={{ display: "flex", padding: "5px" }}>
       <div
@@ -63,7 +65,7 @@ export default function ChatCard(props: { dataChat: any }) {
       <img
         loading="lazy"
         src={
-          dataChat?.receiver?.imgURL ||
+          dataChat?.sender?.imgURL ||
           "https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
         }
         width={28}
@@ -82,6 +84,9 @@ export default function ChatCard(props: { dataChat: any }) {
         }}
       >
         <span
+          onClick={() => {
+            navigator(`/profileoffriend?userID=${dataChat?.sender?.uid}`);
+          }}
           style={{
             fontWeight: "bold",
           }}
