@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Friend } from "types/Friend";
 import FriendCard from "../FriendCard";
 import MessengerUnseen from "./component/MessageUnseen";
+import LastMesenger from "./component/MessageUnseen/component/LastMesenger";
 
 export default function Header() {
   const param = window.location.pathname;
@@ -329,7 +330,14 @@ export default function Header() {
                     <svg className="olymp-chat---messages-icon">
                       <use xlinkHref="#olymp-chat---messages-icon" />
                     </svg>
-                    <div className="label-avatar bg-purple">2</div>
+                    <div className="label-avatar bg-purple">
+                      {lastMessages &&
+                        lastMessages.filter(
+                          (val) =>
+                            val?.lastMessage?.status === "UNSEND" &&
+                            val?.lastMessage?.sender?.uid !== user?.uid
+                        ).length}
+                    </div>
                   </div>
                 </span>
               </li>
@@ -408,178 +416,19 @@ export default function Header() {
                   <a href="/#">Settings</a>
                 </div>
                 <ul className="notification-list chat-message">
-                  <li className="message-unread">
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar59-sm.webp"
-                        alt="author"
-                        width={34}
-                        height={34}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      <a href="/#" className="h6 notification-friend">
-                        Diana Jameson
-                      </a>
-                      <span className="chat-message-item">
-                        Hi James! It’s Diana, I just wanted to let you know that
-                        we have to reschedule...
-                      </span>
-                      <span className="notification-date">
-                        <time
-                          className="entry-date updated"
-                          dateTime="2004-07-24T18:18"
-                        >
-                          4 hours ago
-                        </time>
-                      </span>
-                    </div>
-                    <span className="notification-icon">
-                      <svg className="olymp-chat---messages-icon">
-                        <use xlinkHref="#olymp-chat---messages-icon" />
-                      </svg>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar60-sm.webp"
-                        alt="author"
-                        width={34}
-                        height={34}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      <a href="/#" className="h6 notification-friend">
-                        Jake Parker
-                      </a>
-                      <span className="chat-message-item">
-                        Great, I’ll see you tomorrow!.
-                      </span>
-                      <span className="notification-date">
-                        <time
-                          className="entry-date updated"
-                          dateTime="2004-07-24T18:18"
-                        >
-                          4 hours ago
-                        </time>
-                      </span>
-                    </div>
-                    <span className="notification-icon">
-                      <svg className="olymp-chat---messages-icon">
-                        <use xlinkHref="#olymp-chat---messages-icon" />
-                      </svg>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar61-sm.webp"
-                        alt="author"
-                        width={34}
-                        height={34}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      <a href="/#" className="h6 notification-friend">
-                        Elaine Dreyfuss
-                      </a>
-                      <span className="chat-message-item">
-                        We’ll have to check that at the office and see if the
-                        client is on board with...
-                      </span>
-                      <span className="notification-date">
-                        <time
-                          className="entry-date updated"
-                          dateTime="2004-07-24T18:18"
-                        >
-                          Yesterday at 9:56pm
-                        </time>
-                      </span>
-                    </div>
-                    <span className="notification-icon">
-                      <svg className="olymp-chat---messages-icon">
-                        <use xlinkHref="#olymp-chat---messages-icon" />
-                      </svg>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                    </div>
-                  </li>
-                  <li className="chat-group">
-                    <div className="author-thumb">
-                      <img
-                        loading="lazy"
-                        src="img/avatar11-sm.webp"
-                        alt="author"
-                        width={16}
-                        height={16}
-                      />
-                      <img
-                        loading="lazy"
-                        src="img/avatar12-sm.webp"
-                        alt="author"
-                        width={16}
-                        height={16}
-                      />
-                      <img
-                        loading="lazy"
-                        src="img/avatar13-sm.webp"
-                        alt="author"
-                        width={16}
-                        height={16}
-                      />
-                      <img
-                        loading="lazy"
-                        src="img/avatar10-sm.webp"
-                        alt="author"
-                        width={36}
-                        height={36}
-                      />
-                    </div>
-                    <div className="notification-event">
-                      <a href="/#" className="h6 notification-friend">
-                        You, Faye, Ed &amp; Jet +3
-                      </a>
-                      <span className="last-message-author">Ed:</span>
-                      <span className="chat-message-item">
-                        Yeah! Seems fine by me!
-                      </span>
-                      <span className="notification-date">
-                        <time
-                          className="entry-date updated"
-                          dateTime="2004-07-24T18:18"
-                        >
-                          March 16th at 10:23am
-                        </time>
-                      </span>
-                    </div>
-                    <span className="notification-icon">
-                      <svg className="olymp-chat---messages-icon">
-                        <use xlinkHref="#olymp-chat---messages-icon" />
-                      </svg>
-                    </span>
-                    <div className="more">
-                      <svg className="olymp-three-dots-icon">
-                        <use xlinkHref="#olymp-three-dots-icon" />
-                      </svg>
-                    </div>
-                  </li>
+                  {lastMessages &&
+                    lastMessages.length > 0 &&
+                    lastMessages.map((val) =>
+                      val?.lastMessage ? (
+                        <LastMesenger
+                          setDataUser={setDataUser}
+                          setOpenMessage={setOpenMessage}
+                          dataLastMesenger={val?.lastMessage}
+                          idDoc={val?.idDoc}
+                          key={val?.idDoc}
+                        />
+                      ) : null
+                    )}
                 </ul>
                 <a href="/#" className="view-all bg-purple">
                   View All Messages

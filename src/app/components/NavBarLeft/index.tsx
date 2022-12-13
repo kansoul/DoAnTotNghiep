@@ -1,8 +1,11 @@
+import { useState } from "react";
+
 export default function NavBarLeft() {
+  const [openNav, setOpenNav] = useState<boolean>(false);
   return (
     <div>
       {/* Fixed Sidebar Left */}
-      <div className="fixed-sidebar left">
+      <div className={`fixed-sidebar left ${openNav ? "open" : ""}`}>
         <div className="fixed-sidebar-left sidebar--small" id="sidebar-left">
           <a href="02-ProfilePage.html" className="logo">
             <div className="img-wrap">
@@ -18,7 +21,11 @@ export default function NavBarLeft() {
           <div className="mCustomScrollbar" data-mcs-theme="dark">
             <ul className="left-menu">
               <li>
-                <a href="/#" className="js-sidebar-open">
+                <a
+                  href="#"
+                  onClick={() => setOpenNav(true)}
+                  className={`js-sidebar-open ${openNav ? "active" : ""}`}
+                >
                   <svg
                     className="olymp-menu-icon left-menu-icon"
                     data-bs-toggle="tooltip"
@@ -171,7 +178,11 @@ export default function NavBarLeft() {
           <div className="mCustomScrollbar" data-mcs-theme="dark">
             <ul className="left-menu">
               <li>
-                <a href="/#" className="js-sidebar-open">
+                <a
+                  href="#"
+                  onClick={() => setOpenNav(false)}
+                  className={`js-sidebar-open ${openNav ? "active" : ""}`}
+                >
                   <svg className="olymp-close-icon left-menu-icon">
                     <use xlinkHref="#olymp-close-icon" />
                   </svg>
@@ -341,12 +352,20 @@ export default function NavBarLeft() {
       </div>
       {/* ... end Fixed Sidebar Left */}
       {/* Fixed Sidebar Left */}
-      <div className="fixed-sidebar left fixed-sidebar-responsive">
+      <div
+        className={`fixed-sidebar left fixed-sidebar-responsive ${
+          openNav ? "open" : ""
+        }`}
+      >
         <div
           className="fixed-sidebar-left sidebar--small"
           id="sidebar-left-responsive"
         >
-          <a href="/#" className="logo js-sidebar-open">
+          <a
+            href="#"
+            onClick={() => setOpenNav(true)}
+            className={`logo js-sidebar-open ${openNav ? "active" : ""}`}
+          >
             <img
               loading="lazy"
               src="img/logo.webp"
@@ -403,7 +422,11 @@ export default function NavBarLeft() {
             </div>
             <ul className="left-menu">
               <li>
-                <a href="/#" className="js-sidebar-open">
+                <a
+                  href="#"
+                  onClick={() => setOpenNav(false)}
+                  className={`js-sidebar-open ${openNav ? "active" : ""}`}
+                >
                   <svg className="olymp-close-icon left-menu-icon">
                     <use xlinkHref="#olymp-close-icon" />
                   </svg>

@@ -4,6 +4,50 @@ ol li,
 ul {
   list-style: none;
 }
+.react-datepicker {
+  padding-top: 36px;
+  padding-inline: 25px;
+  font-size: 1rem;
+}
+.react-datepicker__navigation--previous {
+  left: 15px;
+}
+.react-datepicker__navigation--next {
+  right: 15px;
+}
+.react-datepicker__navigation {
+  top: 43px;
+}
+.react-datepicker__header {
+  padding: 8px 0 0 0;
+}
+.react-datepicker__day-name {
+  margin-top: 0.166rem;
+  margin-left: 0.166rem;
+  margin-bottom: 0;
+  margin-right: 0.166rem;
+}
+.react-datepicker__current-month {
+  margin-bottom: 5px;
+}
+.react-datepicker__day {
+  width: 28px;
+  height: 28px;
+}
+
+.react-datepicker__day.react-datepicker__day--keyboard-selected {
+  background: none;
+  color: black;
+}
+
+.react-datepicker__week:first-of-type {
+  margin-top: -8px;
+}
+
+.react-datepicker__week,
+.react-datepicker__day-names {
+  margin-bottom: 5px !important;
+}
 .fc-icon,
 .number-spinner.input-group .glyphicon {
   -webkit-font-smoothing: antialiased;

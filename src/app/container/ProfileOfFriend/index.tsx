@@ -3,9 +3,7 @@ import { auth, db } from "app/services/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useSearchParams } from "react-router-dom";
-import { filterDiarys } from "utils/helper";
-import Post from "../ProfilePage/component/Post";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import About from "./component/About";
 import FriendList from "./component/FriendList";
 import Timeline from "./component/Timeline";
@@ -20,6 +18,7 @@ export default function ProfileOfFriend() {
   const dataCollectionUsers = collection(db, "Users");
   const dataCollectionHobbies = collection(db, "HobbiesAndInterests");
   const dataCollectionDiary = collection(db, "Diary");
+  const navigator = useNavigate();
 
   const [user] = useAuthState(auth);
 
@@ -148,7 +147,15 @@ export default function ProfileOfFriend() {
                       />
                     </a>
                     <div className="author-content">
-                      <a href="#" className="h4 author-name">
+                      <a
+                        href="#"
+                        onClick={() => {
+                          navigator(
+                            `/profileoffriend?userID=${profileInfo?.uid}`
+                          );
+                        }}
+                        className="h4 author-name"
+                      >
                         {profileInfo?.firstName} {profileInfo?.lastName}
                       </a>
                       <div className="country">

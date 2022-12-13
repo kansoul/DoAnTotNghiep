@@ -1,6 +1,7 @@
 import { auth, db } from "app/services/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 import { dateTimeFormat } from "utils/datetime";
 
 export default function LastMesenger(props: {
@@ -11,6 +12,8 @@ export default function LastMesenger(props: {
 }) {
   const { dataLastMesenger, setDataUser, setOpenMessage, idDoc } = props;
   const [user] = useAuthState(auth);
+  const navigator = useNavigate();
+
   const dataUser =
     dataLastMesenger.receiver?.uid === user?.uid
       ? dataLastMesenger.sender
@@ -55,7 +58,13 @@ export default function LastMesenger(props: {
           />
         </div>
         <div className="notification-event">
-          <a href="/#" className="h6 notification-friend">
+          <a
+            href="#"
+            onClick={() => {
+              navigator(`/profileoffriend?userID=${dataUser?.uid}`);
+            }}
+            className="h6 notification-friend"
+          >
             {dataUser?.firstName} {dataUser?.lastName}
           </a>
           <span
