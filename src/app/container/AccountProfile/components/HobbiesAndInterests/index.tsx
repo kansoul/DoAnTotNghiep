@@ -79,6 +79,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="sport"
+                  placeholder="Hobbies"
                 />
               </div>
               <div className="form-group">
@@ -86,6 +87,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="tvShow"
+                  placeholder="Favourite TV Shows"
                 />
               </div>
               <div className="form-group">
@@ -93,6 +95,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="movies"
+                  placeholder="Favourite Movies"
                 />
               </div>
               <div className="form-group">
@@ -100,6 +103,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="games"
+                  placeholder="Favourite Games"
                 />
               </div>
             </div>
@@ -109,6 +113,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="musics"
+                  placeholder="Favourite Music Bands / Artists"
                 />
               </div>
               <div className="form-group">
@@ -116,6 +121,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="books"
+                  placeholder="Favourite Books"
                 />
               </div>
               <div className="form-group">
@@ -123,6 +129,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="writer"
+                  placeholder="Favourite Writers"
                 />
               </div>
               <div className="form-group">
@@ -130,6 +137,7 @@ export default function HobbiesAndInterests() {
                   className="form-control"
                   control={control}
                   name="other"
+                  placeholder="Other Interests"
                 />
               </div>
               <button

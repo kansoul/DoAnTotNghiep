@@ -6,8 +6,10 @@ import { doc, updateDoc } from "firebase/firestore";
 export default function UpdatePhoto(props: {
   openPopup: boolean;
   docId: string;
+  typeOfPhoto: string;
+  reloadData: any;
 }) {
-  const { openPopup, docId } = props;
+  const { openPopup, docId, typeOfPhoto, reloadData } = props;
   const [file, setFile] = useState<any>();
 
   const [preview, setPreview] = useState<any>();
@@ -35,7 +37,7 @@ export default function UpdatePhoto(props: {
     // I've kept this example simple by using the first image instead of multiple
     setFile(event.target.files[0]);
   }
-  function handleUpload() {
+  function handleUploadImgUrl() {
     if (!file) {
       alert("Please choose a file first!");
     }
@@ -65,9 +67,15 @@ export default function UpdatePhoto(props: {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           const dataCollection = doc(db, "Users", docId);
-          updateDoc(dataCollection, { imgUrl: url })
+          updateDoc(
+            dataCollection,
+            typeOfPhoto === "imgUrl" ? { imgUrl: url } : { coverImg: url }
+          )
             .then(() => {
               console.log("Successfully url success!");
+              reloadData();
+              setFile(null);
+              setPreview(null);
             })
             .catch((error) => {
               console.log(error);
@@ -103,7 +111,9 @@ export default function UpdatePhoto(props: {
             </svg>
           </a>
           <div className="modal-header">
-            <h6 className="title">Update Header Photo</h6>
+            <h6 className="title">
+              Update {typeOfPhoto === "imgUrl" ? "Avatar" : "Cover"} Photo
+            </h6>
           </div>
           <div className="modal-body center-item">
             <span className="upload-photo-item">
@@ -119,7 +129,7 @@ export default function UpdatePhoto(props: {
                 <img
                   src="/svg-icons/ok.svg"
                   alt="Ok"
-                  onClick={() => handleUpload()}
+                  onClick={() => handleUploadImgUrl()}
                   style={{ cursor: "pointer" }}
                 />
               ) : (

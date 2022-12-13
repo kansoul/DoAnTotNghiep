@@ -43,7 +43,6 @@ export default function FriendCard(props: { valueFriend: any; reload: any }) {
           id: uuidv4(),
           message: [],
           relationMessage: valueFriend?.relation,
-          lastMessage: {},
         });
         console.log("Successfully updated doc");
         reload();

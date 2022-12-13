@@ -9,6 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 export default function FriendCardAdd(props: {
@@ -69,7 +70,6 @@ export default function FriendCardAdd(props: {
           id: uuidv4(),
           message: [],
           relationMessage: data[0].relation,
-          lastMessage: {},
         });
         console.log("Successfully updated doc");
         reloadData();
@@ -78,6 +78,7 @@ export default function FriendCardAdd(props: {
         console.log(error);
       });
   };
+  const navigator = useNavigate();
   return (
     <div className="col col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
       <div className="ui-block">
@@ -95,9 +96,15 @@ export default function FriendCardAdd(props: {
             />
           </div>
           <div className="birthday-author-name">
-            <a href="/#" className="h6 author-name">
+            <p
+              onClick={() => {
+                navigator(`/profileoffriend?userID=${dataFriend?.uid}`);
+              }}
+              style={{ cursor: "pointer" }}
+              className="h6 author-name"
+            >
               {dataFriend?.firstName} {dataFriend?.lastName}{" "}
-            </a>
+            </p>
             <div className="birthday-date">
               {dataFriend?.birthday &&
                 new Date(dataFriend?.birthday).toLocaleDateString(

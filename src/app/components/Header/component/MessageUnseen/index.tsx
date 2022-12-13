@@ -19,8 +19,8 @@ export default function MessengerUnseen(props: {
         {lastMessages &&
           lastMessages.filter(
             (val) =>
-              val?.lastMessage.status === "UNSEND" &&
-              val?.lastMessage?.sender.uid !== user?.uid
+              val?.lastMessage?.status === "UNSEND" &&
+              val?.lastMessage?.sender?.uid !== user?.uid
           ).length}
       </div>
       <div className="more-dropdown more-with-triangle triangle-top-center">

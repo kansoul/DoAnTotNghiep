@@ -70,13 +70,13 @@ export default function MessageScreen(props: {
         message: arrayUnion({
           receiver: {
             firstName: dataFriend?.firstName,
-            imgURL: dataFriend?.imgUrl || "",
+            imgUrl: dataFriend?.imgUrl || "",
             lastName: dataFriend?.lastName,
             uid: dataFriend?.uid,
           },
           sender: {
             firstName: profile?.firstName,
-            imgURL: profile?.imgUrl || "",
+            imgUrl: profile?.imgUrl || "",
             lastName: profile?.lastName,
             uid: user?.uid,
           },
@@ -88,13 +88,13 @@ export default function MessageScreen(props: {
         lastMessage: {
           receiver: {
             firstName: dataFriend?.firstName,
-            imgURL: dataFriend?.imgUrl || "",
+            imgUrl: dataFriend?.imgUrl || "",
             lastName: dataFriend?.lastName,
             uid: dataFriend?.uid,
           },
           sender: {
             firstName: profile?.firstName,
-            imgURL: profile?.imgUrl || "",
+            imgUrl: profile?.imgUrl || "",
             lastName: profile?.lastName,
             uid: user?.uid,
           },
@@ -120,7 +120,6 @@ export default function MessageScreen(props: {
   useEffect(() => {
     scrollToBottom();
   }, [dataMessage]);
-
   return (
     <div
       className={`ui-block popup-chat popup-chat-responsive ${
