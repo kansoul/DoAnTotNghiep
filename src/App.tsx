@@ -25,7 +25,7 @@ function App() {
         ) : (
           <BrowserRouter>
             <Routes>
-              <Route path="*" element={<Navigate replace to="/profile" />} />
+              <Route path="*" element={<Navigate replace to="/newsfeed" />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/newsfeed" element={<NewsFeed />} />
               <Route path="/musicplay" element={<MusicPlay />} />

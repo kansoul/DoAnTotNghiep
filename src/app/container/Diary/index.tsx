@@ -15,7 +15,7 @@ export default function Diary() {
   const [openViewDiary, setOpenViewDiary] = useState<boolean>(false);
 
   const [datePicker, setDatePicker] = useState<boolean>();
-  const dataCollectionUsers = collection(db, "Diary");
+  const dataCollectionDiary = collection(db, "Diary");
   const [eventList, setEventList] = useState<any>([]);
   const [eventCal, setEventCal] = useState<any | null>(null);
   const [viewEvent, setViewEvent] = useState<any>();
@@ -30,7 +30,7 @@ export default function Diary() {
   const fetchEventCal = async () => {
     setEventCal([]);
     const data: any = [];
-    const q = query(dataCollectionUsers, where("uid", "==", user?.uid));
+    const q = query(dataCollectionDiary, where("uid", "==", user?.uid));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {

@@ -3,8 +3,105 @@ import Feed from "./components/Feed";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Weather from "./components/Weather";
+import {
+  collection,
+  getDocs,
+  limit,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
+import { Diary } from "types/Diary";
+import { auth, db } from "app/services/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect, useState } from "react";
+import { Friend } from "types/Friend";
+import { filterDiarys } from "utils/helper";
+import FriendSuggest from "./components/FriendSuggest";
 
 export default function NewsFeed() {
+  const [user] = useAuthState(auth);
+  const dataCollectionFriend = collection(db, "Friends");
+  const dataCollectionDiary = collection(db, "Diary");
+  const dataCollectionUser = collection(db, "Users");
+
+  const [friendList, setFriendList] = useState<Friend[]>([]);
+  const [friendSuggest, setFriendSuggest] = useState<Friend[]>([]);
+
+  const [newFeedDiary, setNewFeedDiary] = useState<Diary[]>([]);
+  const [uidOfFriend, setUidOfFriend] = useState([]);
+
+  const fetchNewDiary = async (uid: any) => {
+    let data: any = [];
+    setNewFeedDiary([]);
+    const q = query(dataCollectionDiary, where("uid", "in", uid));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      data.push({ idDoc: doc.id, ...doc.data() });
+    });
+    setNewFeedDiary(data);
+  };
+
+  const fetchFriendSuggest = async (uid: any) => {
+    let data: any = [];
+    setFriendSuggest([]);
+    const q = query(dataCollectionUser, where("uid", "not-in", uid), limit(5));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      data.push({ idDoc: doc.id, ...doc.data() });
+    });
+    setFriendSuggest(data);
+  };
+
+  useEffect(() => {
+    let data: any = [];
+    const q = query(
+      dataCollectionFriend,
+      where("relation", "array-contains", user?.uid),
+      where("status", "==", "ACCEPT")
+    );
+    const test = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          data = data.filter((val) => val.idDoc);
+          data.push({ idDoc: change.doc.id, ...change.doc.data() });
+        }
+        if (change.type === "modified") {
+          data = data.filter((val) => val.idDoc !== change.doc.id);
+          data.push({ idDoc: change.doc.id, ...change.doc.data() });
+        }
+        if (change.type === "removed") {
+          data = data.filter((val) => val.idDoc !== change.doc.id);
+        }
+        setFriendList(data);
+      });
+    });
+    return test;
+    // eslint-disable-next-line
+  }, [user]);
+  useEffect(() => {
+    setUidOfFriend([]);
+    const uidList: any = [];
+    friendList.forEach(async (value) => {
+      const dataUID: any = value?.relation;
+      var index = dataUID.indexOf(user?.uid);
+      if (index !== -1) {
+        dataUID.splice(index, 1);
+      }
+      uidList.push(dataUID[0]);
+    });
+    setUidOfFriend(uidList);
+    // eslint-disable-next-line
+  }, [friendList, user]);
+
+  useEffect(() => {
+    fetchNewDiary(uidOfFriend);
+    fetchFriendSuggest(uidOfFriend);
+    // eslint-disable-next-line
+  }, [uidOfFriend]);
+
+  console.log(friendSuggest);
+
   return (
     <>
       <DefaultLayout />
@@ -43,7 +140,12 @@ export default function NewsFeed() {
             </div>
 
             <div id="newsfeed-items-grid">
-              <Feed />
+              {newFeedDiary &&
+                filterDiarys(newFeedDiary) &&
+                filterDiarys(newFeedDiary).length > 0 &&
+                filterDiarys(newFeedDiary).map((diary) => (
+                  <Feed diary={diary} />
+                ))}
             </div>
             <a
               id="load-more-button"
@@ -86,90 +188,11 @@ export default function NewsFeed() {
               </div>
               {/* W-Action */}
               <ul className="widget w-friend-pages-added notification-list friend-requests">
-                <li className="inline-items">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      src="img/avatar38-sm.webp"
-                      alt="author"
-                      width={36}
-                      height={36}
-                    />
-                  </div>
-                  <div className="notification-event">
-                    <a href="/#" className="h6 notification-friend">
-                      Francine Smith
-                    </a>
-                    <span className="chat-message-item">
-                      8 Friends in Common
-                    </span>
-                  </div>
-                  <span className="notification-icon">
-                    <a href="/#" className="accept-request">
-                      <span className="icon-add without-text">
-                        <svg className="olymp-happy-face-icon">
-                          <use xlinkHref="#olymp-happy-face-icon" />
-                        </svg>
-                      </span>
-                    </a>
-                  </span>
-                </li>
-                <li className="inline-items">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      src="img/avatar39-sm.webp"
-                      alt="author"
-                      width={36}
-                      height={36}
-                    />
-                  </div>
-                  <div className="notification-event">
-                    <a href="/#" className="h6 notification-friend">
-                      Hugh Wilson
-                    </a>
-                    <span className="chat-message-item">
-                      6 Friends in Common
-                    </span>
-                  </div>
-                  <span className="notification-icon">
-                    <a href="/#" className="accept-request">
-                      <span className="icon-add without-text">
-                        <svg className="olymp-happy-face-icon">
-                          <use xlinkHref="#olymp-happy-face-icon" />
-                        </svg>
-                      </span>
-                    </a>
-                  </span>
-                </li>
-                <li className="inline-items">
-                  <div className="author-thumb">
-                    <img
-                      loading="lazy"
-                      src="img/avatar40-sm.webp"
-                      alt="author"
-                      width={36}
-                      height={36}
-                    />
-                  </div>
-                  <div className="notification-event">
-                    <a href="/#" className="h6 notification-friend">
-                      Karen Masters
-                    </a>
-                    <span className="chat-message-item">
-                      6 Friends in Common
-                    </span>
-                  </div>
-                  <span className="notification-icon">
-                    <a href="/#" className="accept-request">
-                      <span className="icon-add without-text">
-                        <svg className="olymp-happy-face-icon">
-                          <use xlinkHref="#olymp-happy-face-icon" />
-                        </svg>
-                      </span>
-                    </a>
-                  </span>
-                </li>
+                {friendSuggest &&
+                  friendSuggest.length > 0 &&
+                  friendSuggest.map((friendData) => (
+                    <FriendSuggest friendData={friendData} />
+                  ))}
               </ul>
               {/* ... end W-Action */}
             </div>

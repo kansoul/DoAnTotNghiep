@@ -55,7 +55,7 @@ export default function ProfileOfFriend() {
     fetchHobbies();
     fetchDiary();
     // eslint-disable-next-line
-  }, [user]);
+  }, [user, userID]);
 
   return (
     <>
