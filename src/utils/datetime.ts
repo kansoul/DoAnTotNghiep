@@ -10,4 +10,7 @@ const dateTimeFormatVietNam = (
   targetFormat: string = "dd/MM/yyyy"
 ) => format(date, targetFormat);
 
-export { dateTimeFormat, dateTimeFormatVietNam };
+const dateTimeFormatTime = (date: Date, targetFormat: string = "HH:mm") =>
+  format(date, targetFormat);
+
+export { dateTimeFormat, dateTimeFormatVietNam, dateTimeFormatTime };

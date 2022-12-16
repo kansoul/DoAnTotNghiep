@@ -7,7 +7,7 @@ export default function NavBarLeft() {
       {/* Fixed Sidebar Left */}
       <div className={`fixed-sidebar left ${openNav ? "open" : ""}`}>
         <div className="fixed-sidebar-left sidebar--small" id="sidebar-left">
-          <a href="02-ProfilePage.html" className="logo">
+          <a href="/newsfeed" className="logo">
             <div className="img-wrap">
               <img
                 loading="lazy"
@@ -122,7 +122,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="24-CommunityBadges.html">
+                <a href="/spending">
                   <svg
                     className="olymp-badge-icon left-menu-icon"
                     data-bs-toggle="tooltip"
@@ -460,7 +460,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="mobile-29-YourAccount-AccountSettings.html">
+                <a href="/friend">
                   <svg
                     className="olymp-happy-faces-icon left-menu-icon"
                     data-bs-toggle="tooltip"
@@ -473,7 +473,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="Mobile-30-YourAccount-ChangePassword.html">
+                <a href="/music">
                   <svg
                     className="olymp-headphones-icon left-menu-icon"
                     data-bs-toggle="tooltip"
@@ -486,7 +486,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="Mobile-31-YourAccount-HobbiesAndInterests.html">
+                <a href="/weather">
                   <svg
                     className="olymp-weather-icon left-menu-icon"
                     data-bs-toggle="tooltip"
@@ -499,7 +499,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="Mobile-32-YourAccount-EducationAndEmployement.html">
+                <a href="/diary">
                   <svg
                     className="olymp-calendar-icon left-menu-icon"
                     data-bs-toggle="tooltip"
@@ -512,7 +512,7 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="Mobile-33-YourAccount-Notifications.html">
+                <a href="/spending">
                   <svg
                     className="olymp-badge-icon left-menu-icon"
                     data-bs-toggle="tooltip"

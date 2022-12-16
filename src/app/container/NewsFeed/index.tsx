@@ -18,12 +18,14 @@ import { useEffect, useState } from "react";
 import { Friend } from "types/Friend";
 import { filterDiarys } from "utils/helper";
 import FriendSuggest from "./components/FriendSuggest";
+import { useNavigate } from "react-router-dom";
 
 export default function NewsFeed() {
   const [user] = useAuthState(auth);
   const dataCollectionFriend = collection(db, "Friends");
   const dataCollectionDiary = collection(db, "Diary");
   const dataCollectionUser = collection(db, "Users");
+  const navigator = useNavigate();
 
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [friendSuggest, setFriendSuggest] = useState<Friend[]>([]);
@@ -128,7 +130,10 @@ export default function NewsFeed() {
                       <use xlinkHref="#olymp-camera-icon" />
                     </svg>
                   </a>
-                  <button className="btn btn-primary btn-md-2">
+                  <button
+                    className="btn btn-primary btn-md-2"
+                    onClick={() => navigator(`/diary`)}
+                  >
                     Thêm nhật kí
                   </button>
                   <button className="btn btn-primary btn-md-2">

@@ -474,6 +474,7 @@ export default function Header() {
               param === "/profile" ||
               param === "/accountprofile" ||
               param === "/profileoffriend" ||
+              param === "/spending" ||
               param === "/diary") &&
             "header-spacer-small"
           }`}

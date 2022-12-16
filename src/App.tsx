@@ -8,6 +8,7 @@ import NewsFeed from "app/container/NewsFeed";
 import ProfileOfFriend from "app/container/ProfileOfFriend";
 import ProfilePage from "app/container/ProfilePage";
 import SearchFriend from "app/container/SearchFriend";
+import Spending from "app/container/Spending";
 import Todos from "app/container/Todos";
 import { auth } from "app/services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -36,6 +37,7 @@ function App() {
               <Route path="/searchfriend" element={<SearchFriend />} />
               <Route path="/profileoffriend" element={<ProfileOfFriend />} />
               <Route path="/diary" element={<Diary />} />
+              <Route path="/spending" element={<Spending />} />
             </Routes>
           </BrowserRouter>
         ))}
