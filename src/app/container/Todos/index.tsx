@@ -1,6 +1,6 @@
 import DefaultLayout from "app/layouts";
 import { auth, db } from "app/services/firebase";
-import { query, where, onSnapshot, collection } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Todo } from "types/Todo";
@@ -50,6 +50,7 @@ export default function Todos() {
   return (
     <>
       <DefaultLayout />
+
       <div
         style={{
           marginBottom: "10px",

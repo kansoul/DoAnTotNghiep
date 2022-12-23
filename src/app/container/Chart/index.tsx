@@ -1,6 +1,155 @@
+import DefaultLayout from "app/layouts";
+import { auth, db } from "app/services/firebase";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js/auto";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Spending } from "types/Spending";
+import {
+  dateTimeFormatDay,
+  dateTimeFormatMonth,
+  dateTimeFormatVietNam,
+  dateTimeFormatYear,
+} from "utils/datetime";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 export default function Chart() {
+  const [user] = useAuthState(auth);
+  const dataCollectionSpending = collection(db, "Spending");
+  const [incomeMonth, setIncomeMonth] = useState<number | null>(null);
+  const [expensesMonth, setExpensesMonth] = useState<number | null>(null);
+  const [incomeYear, setIncomeYear] = useState<number | null>(null);
+  const [expensesYear, setExpensesYear] = useState<number | null>(null);
+  const [spendingList, setSpendingList] = useState<Spending[]>([]);
+  const [monthSelect, setMonthSelect] = useState<number>(
+    dateTimeFormatMonth(dateTimeFormatVietNam(new Date()))
+  );
+  const [yearSelect, setYearSelect] = useState<number>(
+    dateTimeFormatYear(dateTimeFormatVietNam(new Date()))
+  );
+
+  const [dataOFMonth, setDataOFMonth] = useState<any>([]);
+  const [dataOFYear, setDataOFYear] = useState<any>([]);
+  const [incomeChartOFMonth, setIncomeChartOFMonth] = useState<number[]>([]);
+  const [expensesChartOFMonth, setExpensesChartOFMonth] = useState<number[]>(
+    []
+  );
+  const [data, setData] = useState<any>();
+  const handleFetchSpending = async () => {
+    const q = query(dataCollectionSpending, where("uid", "==", user?.uid));
+    const querySnapshot = await getDocs(q);
+    const data: any = [];
+    querySnapshot.forEach((doc: any) => {
+      data.push({ idDoc: doc.id, ...doc.data() });
+    });
+    setSpendingList(data);
+  };
+  useEffect(() => {
+    handleFetchSpending();
+    // eslint-disable-next-line
+  }, [user]);
+
+  useEffect(() => {
+    if (spendingList) {
+      setDataOFMonth(
+        spendingList.filter(
+          (val: Spending) =>
+            dateTimeFormatMonth(val.date) === monthSelect &&
+            dateTimeFormatYear(val.date) === yearSelect
+        )
+      );
+      setDataOFYear(
+        spendingList.filter(
+          (val: Spending) => dateTimeFormatYear(val.date) === yearSelect
+        )
+      );
+    }
+  }, [monthSelect, spendingList, yearSelect]);
+
+  useEffect(() => {
+    if (spendingList) {
+      const thuNhapMonth = dataOFMonth
+        .filter((val) => val.type === "INCOME")
+        .reduce((sum, obj) => {
+          return sum + obj.amount;
+        }, 0);
+      const chiTieuMonth = dataOFMonth
+        .filter((val) => val.type === "EXPENSES")
+        .reduce((sum, obj) => {
+          return sum + obj.amount;
+        }, 0);
+      setIncomeMonth(thuNhapMonth);
+      setExpensesMonth(chiTieuMonth);
+
+      const thuNhapYear = dataOFYear
+        .filter((val) => val.type === "INCOME")
+        .reduce((sum, obj) => {
+          return sum + obj.amount;
+        }, 0);
+      const chiTieuYear = dataOFYear
+        .filter((val) => val.type === "EXPENSES")
+        .reduce((sum, obj) => {
+          return sum + obj.amount;
+        }, 0);
+      setIncomeYear(thuNhapYear);
+      setExpensesYear(chiTieuYear);
+    }
+  }, [spendingList, dataOFMonth, dataOFYear]);
+
+  useEffect(() => {
+    let dataIncome: number[] = [];
+    for (let i = 1; i <= 31; i++) {
+      dataIncome.push(
+        dataOFMonth
+          .filter(
+            (val) => val.type === "INCOME" && dateTimeFormatDay(val.date) === i
+          )
+          .reduce((sum, obj) => {
+            return sum + obj.amount;
+          }, 0)
+      );
+    }
+    setIncomeChartOFMonth(dataIncome);
+
+    let dataExpenses: number[] = [];
+    for (let i = 1; i <= 31; i++) {
+      dataExpenses.push(
+        dataOFMonth
+          .filter(
+            (val) =>
+              val.type === "EXPENSES" && dateTimeFormatDay(val.date) === i
+          )
+          .reduce((sum, obj) => {
+            return sum + obj.amount;
+          }, 0)
+      );
+    }
+    setExpensesChartOFMonth(dataExpenses);
+  }, [spendingList, dataOFMonth, dataOFYear]);
+
+  console.log(incomeChartOFMonth);
+
   return (
     <>
+      <DefaultLayout />
       <div>
         <div className="main-header">
           <div className="content-bg-wrap bg-group" />
@@ -37,10 +186,10 @@ export default function Chart() {
                   <ul className="statistics-list-count">
                     <li>
                       <div className="points">
-                        <span>Last Month Visitors</span>
+                        <span>Thu nhập tháng {monthSelect}</span>
                       </div>
                       <div className="count-stat">
-                        28.432
+                        {incomeMonth?.toLocaleString()}
                         <span className="indicator positive"> + 4.207</span>
                       </div>
                     </li>
@@ -54,10 +203,10 @@ export default function Chart() {
                   <ul className="statistics-list-count">
                     <li>
                       <div className="points">
-                        <span>Last Year Visitors</span>
+                        <span>Chi tiêu tháng {monthSelect}</span>
                       </div>
                       <div className="count-stat">
-                        450.623
+                        {expensesMonth?.toLocaleString()}
                         <span className="indicator negative"> - 12.352</span>
                       </div>
                     </li>
@@ -71,11 +220,10 @@ export default function Chart() {
                   <ul className="statistics-list-count">
                     <li>
                       <div className="points">
-                        <span>Last Month Posts</span>
+                        <span>Chi tiêu năm {yearSelect}</span>
                       </div>
                       <div className="count-stat">
-                        16.502
-                        <span className="indicator positive"> + 1.056</span>
+                        {expensesYear?.toLocaleString()}
                       </div>
                     </li>
                   </ul>
@@ -88,11 +236,10 @@ export default function Chart() {
                   <ul className="statistics-list-count">
                     <li>
                       <div className="points">
-                        <span>Last Year Posts</span>
+                        <span>Thu nhập năm {yearSelect}</span>
                       </div>
                       <div className="count-stat">
-                        390.822
-                        <span className="indicator positive"> + 2.847</span>
+                        {incomeYear?.toLocaleString()}
                       </div>
                     </li>
                   </ul>
@@ -106,30 +253,78 @@ export default function Chart() {
             <div className="col col-lg-12 col-sm-12 col-12">
               <div className="ui-block responsive-flex">
                 <div className="ui-block-title">
-                  <div className="h6 title">Monthly Bar Graphic</div>
-                  <select className="form-select form-control without-border">
-                    <option value="LY">LAST YEAR (2016)</option>
-                    <option value="CUR">CURRENT YEAR (2017)</option>
+                  <div className="h6 title">Năm</div>
+                  <select
+                    className="form-select form-control without-border"
+                    value={yearSelect.toString()}
+                    onChange={(e) =>
+                      setYearSelect(parseInt(e.target.value, 10))
+                    }
+                  >
+                    <option value="2020">Năm 2020</option>
+                    <option value="2021">Năm 2021</option>
+                    <option value="2022">Năm 2022</option>
+                    <option value="2023">Năm 2023</option>
                   </select>
-                  <a href="/#" className="more">
-                    <svg className="olymp-three-dots-icon">
-                      <use xlinkHref="#olymp-three-dots-icon" />
-                    </svg>
-                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col col-lg-12 col-sm-12 col-12">
+              <div className="ui-block responsive-flex">
+                <div className="ui-block-title">
+                  <div className="h6 title">Biểu đồ thu chi tháng</div>
+                  <select
+                    className="form-select form-control without-border"
+                    value={monthSelect.toString()}
+                    onChange={(e) =>
+                      setMonthSelect(parseInt(e.target.value, 10))
+                    }
+                  >
+                    <option value="1">Tháng 1</option>
+                    <option value="2">Tháng 2</option>
+                    <option value="3">Tháng 3</option>
+                    <option value="4">Tháng 4</option>
+                    <option value="5">Tháng 5</option>
+                    <option value="6">Tháng 6</option>
+                    <option value="7">Tháng 7</option>
+                    <option value="8">Tháng 8</option>
+                    <option value="9">Tháng 9</option>
+                    <option value="10">Tháng 10</option>
+                    <option value="11">Tháng 11</option>
+                    <option value="12">Tháng 12</option>
+                  </select>
                 </div>
                 <div className="ui-block-content">
-                  {/*--------------------------------------- ONE-BAR-CHART ---------------------------------------*/}
-                  <div className="chart-js chart-js-one-bar">
-                    <canvas id="one-bar-chart" width={1400} height={380} />
-                  </div>
-                  {/*
-        JS libraries for ONE-BAR-CHART:
-        js/libs/Chart.min.js
-        js/libs/chartjs-plugin-deferred.min.js
-        js/libs/loader.min.js
-       */}
-                  {/* JS-init for ONE-BAR-CHART: js/libs/run-chart.min.js */}
-                  {/*------------------------------------ ... end ONE-BAR-CHART ----------------------------------*/}
+                  <Bar
+                    data={{
+                      labels: [
+                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+                        17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+                        31,
+                      ],
+                      datasets: [
+                        {
+                          label: "Thu nhập",
+                          backgroundColor: "#cffafe",
+                          borderColor: "#06b6d4",
+                          borderWidth: 1,
+                          data: incomeChartOFMonth,
+                        },
+                        {
+                          label: "Chi tiêu",
+                          backgroundColor: "#ede9fe",
+                          borderColor: "#7c3aed",
+                          borderWidth: 1,
+                          data: expensesChartOFMonth,
+                        },
+                      ],
+                    }}
+                    options={{
+                      responsive: true,
+                    }}
+                  />
                 </div>
               </div>
             </div>

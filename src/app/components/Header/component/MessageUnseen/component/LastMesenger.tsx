@@ -77,8 +77,14 @@ export default function LastMesenger(props: {
             }
           >
             {dataLastMesenger.receiver?.uid === user?.uid
-              ? dataLastMesenger?.text
-              : `Me: ${dataLastMesenger?.text}`}
+              ? dataLastMesenger.type === "TEXT"
+                ? dataLastMesenger?.text
+                : "Đã gửi một ảnh"
+              : `Me: ${
+                  dataLastMesenger.type === "TEXT"
+                    ? dataLastMesenger?.text
+                    : "Đã gửi một ảnh"
+                }`}
           </span>
           <span className="notification-date">
             <time className="entry-date updated" dateTime="2004-07-24T18:18">

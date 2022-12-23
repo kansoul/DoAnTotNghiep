@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA3UMjRFhjFyPiOMIsQt5ubW2HB7heU4A8",
@@ -49,6 +50,11 @@ const registerWithEmailAndPassword = async (data: any) => {
     });
     await addDoc(collection(db, "HobbiesAndInterests"), {
       uid: user.uid,
+    });
+    await addDoc(collection(db, "ChatBot"), {
+      id: uuidv4(),
+      uid: user.uid,
+      message: [],
     });
   } catch (err: any) {
     console.error(err);

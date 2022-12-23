@@ -31,9 +31,13 @@ export default function ChatCard(props: { dataChat: any }) {
             padding: "8px",
           }}
         >
-          <span style={{ width: "100%", wordBreak: "break-word" }}>
-            {dataChat?.text}
-          </span>
+          {dataChat.type === "TEXT" ? (
+            <span style={{ width: "100%", wordBreak: "break-word" }}>
+              {dataChat?.text}
+            </span>
+          ) : (
+            <img src={dataChat?.text} />
+          )}
         </div>
         <span
           style={{
@@ -101,9 +105,13 @@ export default function ChatCard(props: { dataChat: any }) {
             padding: "8px",
           }}
         >
-          <span style={{ width: "100%", wordBreak: "break-word" }}>
-            {dataChat?.text}
-          </span>
+          {dataChat.type === "TEXT" ? (
+            <span style={{ width: "100%", wordBreak: "break-word" }}>
+              {dataChat?.text}
+            </span>
+          ) : (
+            <img src={dataChat?.text} />
+          )}
         </div>
         <span
           style={{

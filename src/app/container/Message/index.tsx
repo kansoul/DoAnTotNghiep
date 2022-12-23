@@ -1,4 +1,4 @@
-import { auth, db } from "app/services/firebase";
+import { auth, db, storage } from "app/services/firebase";
 import {
   arrayUnion,
   collection,
@@ -9,6 +9,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Message } from "types/Message";
@@ -120,6 +121,90 @@ export default function MessageScreen(props: {
   useEffect(() => {
     scrollToBottom();
   }, [dataMessage]);
+
+  const refInput = useRef<any>(); // Handles input change event and updates state
+  function handleChange(event) {
+    if (!event.target.files[0]) {
+      alert("Please choose a file first!");
+    }
+    const file: any = event.target.files[0];
+
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+        }
+      },
+      (err) => console.log(err),
+      () => {
+        // download url
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          if (dataMessage) {
+            const dataCollection = doc(db, "Message", dataMessage.idDoc);
+            updateDoc(dataCollection, {
+              message: arrayUnion({
+                receiver: {
+                  firstName: dataFriend?.firstName,
+                  imgUrl: dataFriend?.imgUrl || "",
+                  lastName: dataFriend?.lastName,
+                  uid: dataFriend?.uid,
+                },
+                sender: {
+                  firstName: profile?.firstName,
+                  imgUrl: profile?.imgUrl || "",
+                  lastName: profile?.lastName,
+                  uid: user?.uid,
+                },
+                sendAt: new Date(),
+                status: "UNSEND",
+                text: url,
+                type: "PICTURE",
+              }),
+              lastMessage: {
+                receiver: {
+                  firstName: dataFriend?.firstName,
+                  imgUrl: dataFriend?.imgUrl || "",
+                  lastName: dataFriend?.lastName,
+                  uid: dataFriend?.uid,
+                },
+                sender: {
+                  firstName: profile?.firstName,
+                  imgUrl: profile?.imgUrl || "",
+                  lastName: profile?.lastName,
+                  uid: user?.uid,
+                },
+                sendAt: new Date(),
+                status: "UNSEND",
+                text: url,
+                type: "PICTURE",
+              },
+            })
+              .then(() => {
+                console.log("Successfully url success!");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        });
+      }
+    );
+  }
+
   return (
     <div
       className={`ui-block popup-chat popup-chat-responsive ${
@@ -166,8 +251,18 @@ export default function MessageScreen(props: {
                 onChange={(e) => setValueMessage(e.target.value)}
                 style={{ paddingRight: "80px" }}
               />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleChange}
+                ref={refInput}
+                hidden
+              />
               <div className="add-options-message">
-                <span className="options-message">
+                <span
+                  className="options-message"
+                  onClick={() => refInput.current.click()}
+                >
                   <svg className="olymp-computer-icon">
                     <use xlinkHref="#olymp-computer-icon" />
                   </svg>

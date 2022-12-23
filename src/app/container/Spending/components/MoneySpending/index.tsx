@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { Spending } from "types/Spending";
+import {
+  dateTimeFormatMonth,
+  dateTimeFormatVietNam,
+  dateTimeFormatYear,
+} from "utils/datetime";
 import "./index.css";
 
 export default function MoneySpending(props: { spendingList: Spending[] }) {
@@ -7,15 +12,30 @@ export default function MoneySpending(props: { spendingList: Spending[] }) {
   const [balance, setBalance] = useState<number | null>(null);
   const [income, setIncome] = useState<number | null>(null);
   const [expenses, setExpenses] = useState<number | null>(null);
-  console.log(spendingList);
+  const [dataOFMonth, setDataOFMonth] = useState<any>([]);
+
   useEffect(() => {
     if (spendingList) {
-      const thuNhap = spendingList
+      setDataOFMonth(
+        spendingList.filter(
+          (val: Spending) =>
+            dateTimeFormatMonth(val.date) ===
+              dateTimeFormatMonth(dateTimeFormatVietNam(new Date())) &&
+            dateTimeFormatYear(val.date) ===
+              dateTimeFormatYear(dateTimeFormatVietNam(new Date()))
+        )
+      );
+    }
+  }, [spendingList]);
+
+  useEffect(() => {
+    if (spendingList && dataOFMonth) {
+      const thuNhap = dataOFMonth
         .filter((val) => val.type === "INCOME")
         .reduce((sum, obj) => {
           return sum + obj.amount;
         }, 0);
-      const chiTieu = spendingList
+      const chiTieu = dataOFMonth
         .filter((val) => val.type === "EXPENSES")
         .reduce((sum, obj) => {
           return sum + obj.amount;
@@ -23,7 +43,7 @@ export default function MoneySpending(props: { spendingList: Spending[] }) {
       setIncome(thuNhap);
       setExpenses(chiTieu);
     }
-  }, [spendingList]);
+  }, [spendingList, dataOFMonth]);
   useEffect(() => {
     if (income && expenses) setBalance(income - expenses);
   }, [income, expenses]);
