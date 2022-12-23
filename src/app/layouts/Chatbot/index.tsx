@@ -21,7 +21,7 @@ import ChatBotCard from "./ChatbotCard";
 import "./index.css";
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
