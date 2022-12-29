@@ -18,6 +18,7 @@ export default function Post(props: { profileInfo: any; diaryData: any }) {
   const [diaryChange, setDiaryChange] = useState<any>(diaryData);
   const dataCollectionDiary = collection(db, "Diary");
   const [openComment, setOpenComment] = useState<boolean>(false);
+  const [maxComment, setMaxComment] = useState<number>(2);
 
   const [contentComment, setContentComment] = useState<string>("");
   const addComment = () => {
@@ -171,10 +172,21 @@ export default function Post(props: { profileInfo: any; diaryData: any }) {
                 <Comment commentData={comment} key={index} />
               ))}
           </ul>
-          {diaryChange?.comment && diaryChange?.comment.length > 0 && (
-            <a href="#" className="more-comments">
-              View more comments <span>+</span>
-            </a>
+          {diaryChange?.comment && diaryChange?.comment.length > 2 && (
+            <span
+              onClick={() =>
+                setMaxComment(
+                  maxComment === diaryChange?.comment.length
+                    ? 2
+                    : diaryChange?.comment.length
+                )
+              }
+              className="more-comments"
+            >
+              View{" "}
+              {maxComment === diaryChange?.comment.length ? "little" : "more"}{" "}
+              comments <span>+</span>
+            </span>
           )}
 
           <form className="comment-form inline-items">

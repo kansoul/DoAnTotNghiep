@@ -1,12 +1,14 @@
 import { db } from "app/services/firebase";
 import { query, where, getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { dateTimeFormat } from "utils/datetime";
 
 export default function Comment(props: { commentData: any }) {
   const { commentData } = props;
   const [profileInfo, setProfileInfo] = useState<any>();
   const dataCollectionUsers = collection(db, "Users");
+  const navigator = useNavigate();
 
   const fetchAccountInfor = async (userId: string) => {
     const q = query(dataCollectionUsers, where("uid", "==", userId));
@@ -34,7 +36,13 @@ export default function Comment(props: { commentData: any }) {
           alt="author"
         />
         <div className="author-date">
-          <a className="h6 post__author-name fn" href="02-ProfilePage.html">
+          <a
+            href="#"
+            className="h6 post__author-name fn"
+            onClick={() => {
+              navigator(`/profileoffriend?userID=${profileInfo?.uid}`);
+            }}
+          >
             {profileInfo?.firstName} {profileInfo?.lastName}
           </a>
           <div className="post__date">
