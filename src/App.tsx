@@ -30,7 +30,7 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/newsfeed" element={<NewsFeed />} />
               <Route path="/musicplay" element={<MusicPlay />} />
-              <Route path="/todos" element={<Todos />} />
+              <Route path="/todo" element={<Todos />} />
               <Route path="/friendbirthday" element={<FriendsBirthday />} />
               <Route path="/chart" element={<Chart />} />
               <Route path="/accountprofile" element={<AccountProfile />} />
