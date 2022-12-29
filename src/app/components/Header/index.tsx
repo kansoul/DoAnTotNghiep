@@ -164,8 +164,8 @@ export default function Header() {
                   </div>
                   <div
                     className="scroll-custom"
-                    data-mcs-theme="dark"
                     style={{ maxHeight: "300px" }}
+                    data-mcs-theme="dark"
                   >
                     <ul className="notification-list friend-requests">
                       {friendList.map((value: any) => (
@@ -717,9 +717,12 @@ export default function Header() {
               id="notification"
               role="tabpanel"
               aria-labelledby="notification-tab"
-              style={{ maxHeight: "300px" }}
             >
-              <div className="scroll-custom" data-mcs-theme="dark">
+              <div
+                className="scroll-custom"
+                data-mcs-theme="dark"
+                style={{ maxHeight: "300px" }}
+              >
                 <div className="ui-block-title ui-block-title-small">
                   <h6 className="title">Notifications</h6>
                   <a href="#">Mark all as read</a>
