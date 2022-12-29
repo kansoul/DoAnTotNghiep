@@ -38,6 +38,7 @@ export default function AddDiary(props: {
       uid: user?.uid,
       title: title,
       like: [],
+      comment: [],
       date: datePicker,
       isPublic: isPublic,
     };

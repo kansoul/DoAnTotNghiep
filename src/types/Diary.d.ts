@@ -5,6 +5,11 @@ export interface Diary {
   title: string;
   content: string;
   like: string[];
+  comment: {
+    uid: string;
+    content: string;
+    datetime: string;
+  }[];
   date: string;
   isPublic: boolean;
 }

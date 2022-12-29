@@ -102,8 +102,6 @@ export default function NewsFeed() {
     // eslint-disable-next-line
   }, [uidOfFriend]);
 
-  console.log(friendSuggest);
-
   return (
     <>
       <DefaultLayout />
@@ -136,7 +134,10 @@ export default function NewsFeed() {
                   >
                     Thêm nhật kí
                   </button>
-                  <button className="btn btn-primary btn-md-2">
+                  <button
+                    className="btn btn-primary btn-md-2"
+                    onClick={() => navigator(`/spending`)}
+                  >
                     Thêm chi tiêu
                   </button>
                 </div>

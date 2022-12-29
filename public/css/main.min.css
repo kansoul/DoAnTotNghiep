@@ -4311,7 +4311,6 @@ fieldset[disabled] .checkbox input[type="checkbox"] {
   height: 70px;
   background-color: #ff5e3a;
   background-color: var(--olympus-primary-color);
-  padding: 15px;
 }
 .fixed-sidebar .ui-block-title {
   margin: 15px 0;

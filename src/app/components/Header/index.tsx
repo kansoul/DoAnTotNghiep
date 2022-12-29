@@ -24,6 +24,7 @@ export default function Header() {
 
   const [openFriendRequest, setOpenFriendRequest] = useState<boolean>(false);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
+  const [notification, setNotification] = useState<boolean>(false);
 
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [searchFriend, setSearchFriend] = useState<string>("");
@@ -123,7 +124,7 @@ export default function Header() {
       <div>
         <header className="header" id="site-header">
           <div className="page-title">
-            <h6>Profile Page</h6>
+            <h6>Diary</h6>
           </div>
           <div className="header-content-wrapper">
             <form className="search-bar w-search notification-list friend-requests">
@@ -186,6 +187,268 @@ export default function Header() {
                 setOpenMessage={setOpenMessage}
                 lastMessages={lastMessages}
               />
+              <div className="control-icon more has-items">
+                <svg className="olymp-thunder-icon">
+                  <use xlinkHref="#olymp-thunder-icon" />
+                </svg>
+                <div className="label-avatar bg-primary">8</div>
+                <div className="more-dropdown more-with-triangle triangle-top-center">
+                  <div className="ui-block-title ui-block-title-small">
+                    <h6 className="title">Notifications</h6>
+                    <a href="#">Mark all as read</a>
+                    <a href="#">Settings</a>
+                  </div>
+                  <div
+                    className="scroll-custom"
+                    data-mcs-theme="dark"
+                    style={{ maxHeight: "300px" }}
+                  >
+                    <ul className="notification-list">
+                      <li>
+                        <div className="author-thumb">
+                          <img
+                            loading="lazy"
+                            src="img/avatar62-sm.webp"
+                            width={34}
+                            height={34}
+                            alt="author"
+                          />
+                        </div>
+                        <div className="notification-event">
+                          <div>
+                            <a href="#" className="h6 notification-friend">
+                              Mathilda Brinker
+                            </a>{" "}
+                            commented on your new
+                            <a href="#" className="notification-link">
+                              profile status
+                            </a>
+                            .
+                          </div>
+                          <span className="notification-date">
+                            <time
+                              className="entry-date updated"
+                              dateTime="2004-07-24T18:18"
+                            >
+                              4 hours ago
+                            </time>
+                          </span>
+                        </div>
+                        <span className="notification-icon">
+                          <svg className="olymp-comments-post-icon">
+                            <use xlinkHref="#olymp-comments-post-icon" />
+                          </svg>
+                        </span>
+                        <div className="more">
+                          <svg className="olymp-three-dots-icon">
+                            <use xlinkHref="#olymp-three-dots-icon" />
+                          </svg>
+                          <svg className="olymp-little-delete">
+                            <use xlinkHref="#olymp-little-delete" />
+                          </svg>
+                        </div>
+                      </li>
+                      <li className="un-read">
+                        <div className="author-thumb">
+                          <img
+                            loading="lazy"
+                            src="img/avatar63-sm.webp"
+                            alt="author"
+                            width={34}
+                            height={34}
+                          />
+                        </div>
+                        <div className="notification-event">
+                          <div>
+                            You and
+                            <a href="#" className="h6 notification-friend">
+                              Nicholas Grissom
+                            </a>{" "}
+                            just became friends. Write on
+                            <a href="#" className="notification-link">
+                              his wall
+                            </a>
+                            .
+                          </div>
+                          <span className="notification-date">
+                            <time
+                              className="entry-date updated"
+                              dateTime="2004-07-24T18:18"
+                            >
+                              9 hours ago
+                            </time>
+                          </span>
+                        </div>
+                        <span className="notification-icon">
+                          <svg className="olymp-happy-face-icon">
+                            <use xlinkHref="#olymp-happy-face-icon" />
+                          </svg>
+                        </span>
+                        <div className="more">
+                          <svg className="olymp-three-dots-icon">
+                            <use xlinkHref="#olymp-three-dots-icon" />
+                          </svg>
+                          <svg className="olymp-little-delete">
+                            <use xlinkHref="#olymp-little-delete" />
+                          </svg>
+                        </div>
+                      </li>
+                      <li className="with-comment-photo-wrap">
+                        <div className="with-comment-photo">
+                          <div className="author-thumb">
+                            <img
+                              loading="lazy"
+                              src="img/avatar64-sm.webp"
+                              width={34}
+                              height={34}
+                              alt="author"
+                            />
+                          </div>
+                          <div className="notification-event">
+                            <div>
+                              <a href="#" className="h6 notification-friend">
+                                Sarah Hetfield
+                              </a>{" "}
+                              commented on your
+                              <a href="#" className="notification-link">
+                                photo
+                              </a>
+                              .
+                            </div>
+                            <span className="notification-date">
+                              <time
+                                className="entry-date updated"
+                                dateTime="2004-07-24T18:18"
+                              >
+                                Yesterday at 5:32am
+                              </time>
+                            </span>
+                          </div>
+                          <span className="notification-icon">
+                            {" "}
+                            <svg className="olymp-comments-post-icon">
+                              <use xlinkHref="#olymp-comments-post-icon" />
+                            </svg>{" "}
+                          </span>
+                        </div>
+                        <div className="comment-photo">
+                          <img
+                            loading="lazy"
+                            src="img/comment-photo1.webp"
+                            alt="photo"
+                            width={40}
+                            height={40}
+                          />
+                          <span>
+                            “She looks incredible in that outfit! We should see
+                            each...”
+                          </span>
+                        </div>
+                        <div className="more">
+                          <svg className="olymp-three-dots-icon">
+                            <use xlinkHref="#olymp-three-dots-icon" />
+                          </svg>
+                          <svg className="olymp-little-delete">
+                            <use xlinkHref="#olymp-little-delete" />
+                          </svg>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="author-thumb">
+                          <img
+                            loading="lazy"
+                            src="img/avatar65-sm.webp"
+                            alt="author"
+                            width={34}
+                            height={34}
+                          />
+                        </div>
+                        <div className="notification-event">
+                          <div>
+                            <a href="#" className="h6 notification-friend">
+                              Green Goo Rock
+                            </a>{" "}
+                            invited you to attend to his event Goo in
+                            <a href="#" className="notification-link">
+                              Gotham Bar
+                            </a>
+                            .
+                          </div>
+                          <span className="notification-date">
+                            <time
+                              className="entry-date updated"
+                              dateTime="2004-07-24T18:18"
+                            >
+                              March 5th at 6:43pm
+                            </time>
+                          </span>
+                        </div>
+                        <span className="notification-icon">
+                          <svg className="olymp-happy-face-icon">
+                            <use xlinkHref="#olymp-happy-face-icon" />
+                          </svg>
+                        </span>
+                        <div className="more">
+                          <svg className="olymp-three-dots-icon">
+                            <use xlinkHref="#olymp-three-dots-icon" />
+                          </svg>
+                          <svg className="olymp-little-delete">
+                            <use xlinkHref="#olymp-little-delete" />
+                          </svg>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="author-thumb">
+                          <img
+                            loading="lazy"
+                            src="img/avatar66-sm.webp"
+                            alt="author"
+                            width={34}
+                            height={34}
+                          />
+                        </div>
+                        <div className="notification-event">
+                          <div>
+                            <a href="#" className="h6 notification-friend">
+                              James Summers
+                            </a>{" "}
+                            commented on your new
+                            <a href="#" className="notification-link">
+                              profile status
+                            </a>
+                            .
+                          </div>
+                          <span className="notification-date">
+                            <time
+                              className="entry-date updated"
+                              dateTime="2004-07-24T18:18"
+                            >
+                              March 2nd at 8:29pm
+                            </time>
+                          </span>
+                        </div>
+                        <span className="notification-icon">
+                          <svg className="olymp-heart-icon">
+                            <use xlinkHref="#olymp-heart-icon" />
+                          </svg>
+                        </span>
+                        <div className="more">
+                          <svg className="olymp-three-dots-icon">
+                            <use xlinkHref="#olymp-three-dots-icon" />
+                          </svg>
+                          <svg className="olymp-little-delete">
+                            <use xlinkHref="#olymp-little-delete" />
+                          </svg>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <a href="#" className="view-all bg-primary">
+                    View All Notifications
+                  </a>
+                </div>
+              </div>
+
               <div className="author-page author vcard inline-items more">
                 <div className="author-thumb">
                   <img
@@ -210,26 +473,14 @@ export default function Header() {
                       </div>
                       <ul className="account-settings">
                         <li>
-                          <a href="29-YourAccount-AccountSettings.html">
+                          <a href="/profile">
                             <svg className="olymp-menu-icon">
                               <use xlinkHref="#olymp-menu-icon" />
                             </svg>
                             <span>Profile Settings</span>
                           </a>
                         </li>
-                        <li>
-                          <a href="36-FavPage-SettingsAndCreatePopup.html">
-                            <svg
-                              className="olymp-star-icon left-menu-icon"
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="right"
-                              data-bs-original-title="FAV PAGE"
-                            >
-                              <use xlinkHref="#olymp-star-icon" />
-                            </svg>
-                            <span>Create Fav Page</span>
-                          </a>
-                        </li>
+
                         <li>
                           <a onClick={() => handleLogout()} href="/login">
                             <svg className="olymp-logout-icon">
@@ -270,7 +521,6 @@ export default function Header() {
                       <use xlinkHref="#olymp-dropdown-arrow-icon" />
                     </svg>
                   </div>
-                  <span className="author-subtitle">SPACE COWBOY</span>
                 </a>
               </div>
             </div>
@@ -297,6 +547,7 @@ export default function Header() {
                     setOpenFriendRequest(!openFriendRequest);
                     setOpenChat(false);
                     setOpenSearch(false);
+                    setNotification(false);
                   }}
                   role="tab"
                   aria-controls="request"
@@ -321,6 +572,7 @@ export default function Header() {
                     setOpenFriendRequest(false);
                     setOpenChat(!openChat);
                     setOpenSearch(false);
+                    setNotification(false);
                   }}
                   role="tab"
                   aria-controls="chat"
@@ -342,6 +594,30 @@ export default function Header() {
                 </span>
               </li>
               <li className="nav-item" role="presentation">
+                <a
+                  className="nav-link"
+                  id="notification-tab"
+                  data-bs-toggle="tab"
+                  href="#notification"
+                  onClick={() => {
+                    setOpenFriendRequest(false);
+                    setOpenChat(false);
+                    setOpenSearch(false);
+                    setNotification(!notification);
+                  }}
+                  role="tab"
+                  aria-controls="notification"
+                  aria-selected="false"
+                >
+                  <div className="control-icon has-items">
+                    <svg className="olymp-thunder-icon">
+                      <use xlinkHref="#olymp-thunder-icon" />
+                    </svg>
+                    <div className="label-avatar bg-primary">8</div>
+                  </div>
+                </a>
+              </li>
+              <li className="nav-item" role="presentation">
                 <span
                   className="nav-link"
                   id="search-tab"
@@ -350,6 +626,7 @@ export default function Header() {
                     setOpenFriendRequest(false);
                     setOpenChat(false);
                     setOpenSearch(!openSearch);
+                    setNotification(false);
                   }}
                   role="tab"
                   aria-controls="search"
@@ -435,6 +712,264 @@ export default function Header() {
                 </a>
               </div>
             </div>
+            <div
+              className={`tab-pane fade ${notification ? "active show" : ""}`}
+              id="notification"
+              role="tabpanel"
+              aria-labelledby="notification-tab"
+              style={{ maxHeight: "300px" }}
+            >
+              <div className="scroll-custom" data-mcs-theme="dark">
+                <div className="ui-block-title ui-block-title-small">
+                  <h6 className="title">Notifications</h6>
+                  <a href="#">Mark all as read</a>
+                  <a href="#">Settings</a>
+                </div>
+                <ul className="notification-list">
+                  <li>
+                    <div className="author-thumb">
+                      <img
+                        loading="lazy"
+                        src="img/avatar62-sm.webp"
+                        width={34}
+                        height={34}
+                        alt="author"
+                      />
+                    </div>
+                    <div className="notification-event">
+                      <div>
+                        <a href="#" className="h6 notification-friend">
+                          Mathilda Brinker
+                        </a>{" "}
+                        commented on your new
+                        <a href="#" className="notification-link">
+                          profile status
+                        </a>
+                        .
+                      </div>
+                      <span className="notification-date">
+                        <time
+                          className="entry-date updated"
+                          dateTime="2004-07-24T18:18"
+                        >
+                          4 hours ago
+                        </time>
+                      </span>
+                    </div>
+                    <span className="notification-icon">
+                      <svg className="olymp-comments-post-icon">
+                        <use xlinkHref="#olymp-comments-post-icon" />
+                      </svg>
+                    </span>
+                    <div className="more">
+                      <svg className="olymp-three-dots-icon">
+                        <use xlinkHref="#olymp-three-dots-icon" />
+                      </svg>
+                      <svg className="olymp-little-delete">
+                        <use xlinkHref="#olymp-little-delete" />
+                      </svg>
+                    </div>
+                  </li>
+                  <li className="un-read">
+                    <div className="author-thumb">
+                      <img
+                        loading="lazy"
+                        src="img/avatar63-sm.webp"
+                        alt="author"
+                        width={34}
+                        height={34}
+                      />
+                    </div>
+                    <div className="notification-event">
+                      <div>
+                        You and
+                        <a href="#" className="h6 notification-friend">
+                          Nicholas Grissom
+                        </a>{" "}
+                        just became friends. Write on
+                        <a href="#" className="notification-link">
+                          his wall
+                        </a>
+                        .
+                      </div>
+                      <span className="notification-date">
+                        <time
+                          className="entry-date updated"
+                          dateTime="2004-07-24T18:18"
+                        >
+                          9 hours ago
+                        </time>
+                      </span>
+                    </div>
+                    <span className="notification-icon">
+                      <svg className="olymp-happy-face-icon">
+                        <use xlinkHref="#olymp-happy-face-icon" />
+                      </svg>
+                    </span>
+                    <div className="more">
+                      <svg className="olymp-three-dots-icon">
+                        <use xlinkHref="#olymp-three-dots-icon" />
+                      </svg>
+                      <svg className="olymp-little-delete">
+                        <use xlinkHref="#olymp-little-delete" />
+                      </svg>
+                    </div>
+                  </li>
+                  <li className="with-comment-photo-wrap">
+                    <div className="with-comment-photo">
+                      <div className="author-thumb">
+                        <img
+                          loading="lazy"
+                          src="img/avatar64-sm.webp"
+                          width={34}
+                          height={34}
+                          alt="author"
+                        />
+                      </div>
+                      <div className="notification-event">
+                        <div>
+                          <a href="#" className="h6 notification-friend">
+                            Sarah Hetfield
+                          </a>{" "}
+                          commented on your
+                          <a href="#" className="notification-link">
+                            photo
+                          </a>
+                          .
+                        </div>
+                        <span className="notification-date">
+                          <time
+                            className="entry-date updated"
+                            dateTime="2004-07-24T18:18"
+                          >
+                            Yesterday at 5:32am
+                          </time>
+                        </span>
+                      </div>
+                      <span className="notification-icon">
+                        {" "}
+                        <svg className="olymp-comments-post-icon">
+                          <use xlinkHref="#olymp-comments-post-icon" />
+                        </svg>{" "}
+                      </span>
+                    </div>
+                    <div className="comment-photo">
+                      <img
+                        loading="lazy"
+                        src="img/comment-photo1.webp"
+                        alt="photo"
+                        width={40}
+                        height={40}
+                      />
+                      <span>
+                        “She looks incredible in that outfit! We should see
+                        each...”
+                      </span>
+                    </div>
+                    <div className="more">
+                      <svg className="olymp-three-dots-icon">
+                        <use xlinkHref="#olymp-three-dots-icon" />
+                      </svg>
+                      <svg className="olymp-little-delete">
+                        <use xlinkHref="#olymp-little-delete" />
+                      </svg>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="author-thumb">
+                      <img
+                        loading="lazy"
+                        src="img/avatar65-sm.webp"
+                        alt="author"
+                        width={34}
+                        height={34}
+                      />
+                    </div>
+                    <div className="notification-event">
+                      <div>
+                        <a href="#" className="h6 notification-friend">
+                          Green Goo Rock
+                        </a>{" "}
+                        invited you to attend to his event Goo in
+                        <a href="#" className="notification-link">
+                          Gotham Bar
+                        </a>
+                        .
+                      </div>
+                      <span className="notification-date">
+                        <time
+                          className="entry-date updated"
+                          dateTime="2004-07-24T18:18"
+                        >
+                          March 5th at 6:43pm
+                        </time>
+                      </span>
+                    </div>
+                    <span className="notification-icon">
+                      <svg className="olymp-happy-face-icon">
+                        <use xlinkHref="#olymp-happy-face-icon" />
+                      </svg>
+                    </span>
+                    <div className="more">
+                      <svg className="olymp-three-dots-icon">
+                        <use xlinkHref="#olymp-three-dots-icon" />
+                      </svg>
+                      <svg className="olymp-little-delete">
+                        <use xlinkHref="#olymp-little-delete" />
+                      </svg>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="author-thumb">
+                      <img
+                        loading="lazy"
+                        src="img/avatar66-sm.webp"
+                        alt="author"
+                        width={34}
+                        height={34}
+                      />
+                    </div>
+                    <div className="notification-event">
+                      <div>
+                        <a href="#" className="h6 notification-friend">
+                          James Summers
+                        </a>{" "}
+                        commented on your new
+                        <a href="#" className="notification-link">
+                          profile status
+                        </a>
+                        .
+                      </div>
+                      <span className="notification-date">
+                        <time
+                          className="entry-date updated"
+                          dateTime="2004-07-24T18:18"
+                        >
+                          March 2nd at 8:29pm
+                        </time>
+                      </span>
+                    </div>
+                    <span className="notification-icon">
+                      <svg className="olymp-heart-icon">
+                        <use xlinkHref="#olymp-heart-icon" />
+                      </svg>
+                    </span>
+                    <div className="more">
+                      <svg className="olymp-three-dots-icon">
+                        <use xlinkHref="#olymp-three-dots-icon" />
+                      </svg>
+                      <svg className="olymp-little-delete">
+                        <use xlinkHref="#olymp-little-delete" />
+                      </svg>
+                    </div>
+                  </li>
+                </ul>
+                <a href="#" className="view-all bg-primary">
+                  View All Notifications
+                </a>
+              </div>
+            </div>
+
             <div
               className={`tab-pane fade ${openSearch ? "active show" : ""}`}
               id="search"
