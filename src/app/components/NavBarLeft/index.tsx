@@ -3,6 +3,7 @@ import { useState } from "react";
 
 export default function NavBarLeft() {
   const [openNav, setOpenNav] = useState<boolean>(false);
+  const param = window.location.pathname;
   const handleLogout = () => {
     logout();
   };
@@ -47,6 +48,7 @@ export default function NavBarLeft() {
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
                     data-bs-original-title="NEWSFEED"
+                    style={param === "/newsfeed" ? { fill: "#ff5e3a" } : {}}
                   >
                     <use xlinkHref="#olymp-newsfeed-icon" />
                   </svg>
@@ -55,6 +57,7 @@ export default function NavBarLeft() {
               <li>
                 <a href="/profile">
                   <svg
+                    style={param === "/profile" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-star-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -68,6 +71,7 @@ export default function NavBarLeft() {
               <li>
                 <a href="/todo">
                   <svg
+                    style={param === "/todo" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-manage-widgets-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -80,6 +84,7 @@ export default function NavBarLeft() {
               <li>
                 <a href="/diary">
                   <svg
+                    style={param === "/diary" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-calendar-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -92,6 +97,7 @@ export default function NavBarLeft() {
               <li>
                 <a href="/spending">
                   <svg
+                    style={param === "/spending" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-badge-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -104,6 +110,7 @@ export default function NavBarLeft() {
               <li>
                 <a href="/chart">
                   <svg
+                    style={param === "/chart" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-stats-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -116,6 +123,9 @@ export default function NavBarLeft() {
               <li>
                 <a href="/friendbirthday">
                   <svg
+                    style={
+                      param === "/friendbirthday" ? { fill: "#ff5e3a" } : {}
+                    }
                     className="olymp-cupcake-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -152,6 +162,7 @@ export default function NavBarLeft() {
               <li>
                 <a href="/newsfeed">
                   <svg
+                    style={param === "/newsfeed" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-newsfeed-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -159,12 +170,18 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-newsfeed-icon" />
                   </svg>
-                  <span className="left-menu-title">Newsfeed</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/newsfeed" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Newsfeed
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/profile">
                   <svg
+                    style={param === "/profile" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-star-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -172,13 +189,19 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-star-icon" />
                   </svg>
-                  <span className="left-menu-title">Profile</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/profile" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Profile
+                  </span>
                 </a>
               </li>
 
               <li>
                 <a href="/todo">
                   <svg
+                    style={param === "/todo" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-manage-widgets-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -186,13 +209,19 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-manage-widgets-icon" />
                   </svg>
-                  <span className="left-menu-title">To do</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/todo" ? { color: "#ff5e3a" } : {}}
+                  >
+                    To do
+                  </span>
                 </a>
               </li>
 
               <li>
                 <a href="/diary">
                   <svg
+                    style={param === "/diary" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-calendar-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -200,12 +229,18 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-calendar-icon" />
                   </svg>
-                  <span className="left-menu-title">Diary</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/diary" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Diary
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/spending">
                   <svg
+                    style={param === "/spending" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-badge-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -213,12 +248,18 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-badge-icon" />
                   </svg>
-                  <span className="left-menu-title">Spending</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/spending" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Spending
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/chart">
                   <svg
+                    style={param === "/chart" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-stats-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -226,12 +267,20 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-stats-icon" />
                   </svg>
-                  <span className="left-menu-title">Account Chart</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/chart" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Account Chart
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/friendbirthday">
                   <svg
+                    style={
+                      param === "/friendbirthday" ? { fill: "#ff5e3a" } : {}
+                    }
                     className="olymp-cupcake-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -239,7 +288,14 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-cupcake-icon" />
                   </svg>
-                  <span className="left-menu-title">Friends Birthdays</span>
+                  <span
+                    className="left-menu-title"
+                    style={
+                      param === "/friendbirthday" ? { color: "#ff5e3a" } : {}
+                    }
+                  >
+                    Friends Birthdays
+                  </span>
                 </a>
               </li>
             </ul>
@@ -325,6 +381,7 @@ export default function NavBarLeft() {
               <li>
                 <a href="/newsfeed">
                   <svg
+                    style={param === "/newsfeed" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-newsfeed-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -332,12 +389,18 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-newsfeed-icon" />
                   </svg>
-                  <span className="left-menu-title">Newsfeed</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/newsfeed" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Newsfeed
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/profile">
                   <svg
+                    style={param === "/profile" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-star-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -345,13 +408,19 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-star-icon" />
                   </svg>
-                  <span className="left-menu-title">Fav Pages Feed</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/profile" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Profile
+                  </span>
                 </a>
               </li>
 
               <li>
                 <a href="/todo">
                   <svg
+                    style={param === "/todo" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-manage-widgets-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -359,12 +428,18 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-manage-widgets-icon" />
                   </svg>
-                  <span className="left-menu-title">To do</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/todo" ? { color: "#ff5e3a" } : {}}
+                  >
+                    To do
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/diary">
                   <svg
+                    style={param === "/diary" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-calendar-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -372,12 +447,18 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-calendar-icon" />
                   </svg>
-                  <span className="left-menu-title">Diary</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/diary" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Diary
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/spending">
                   <svg
+                    style={param === "/spending" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-badge-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -385,12 +466,18 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-badge-icon" />
                   </svg>
-                  <span className="left-menu-title">Spending</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/spending" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Spending
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/chart">
                   <svg
+                    style={param === "/chart" ? { fill: "#ff5e3a" } : {}}
                     className="olymp-stats-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -398,12 +485,20 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-stats-icon" />
                   </svg>
-                  <span className="left-menu-title">Chart</span>
+                  <span
+                    className="left-menu-title"
+                    style={param === "/chart" ? { color: "#ff5e3a" } : {}}
+                  >
+                    Chart
+                  </span>
                 </a>
               </li>
               <li>
                 <a href="/friendbirthday">
                   <svg
+                    style={
+                      param === "/friendbirthday" ? { fill: "#ff5e3a" } : {}
+                    }
                     className="olymp-cupcake-icon left-menu-icon"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
@@ -411,7 +506,14 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-cupcake-icon" />
                   </svg>
-                  <span className="left-menu-title">Friends Birthdays</span>
+                  <span
+                    className="left-menu-title"
+                    style={
+                      param === "/friendbirthday" ? { color: "#ff5e3a" } : {}
+                    }
+                  >
+                    Friends Birthdays
+                  </span>
                 </a>
               </li>
             </ul>
