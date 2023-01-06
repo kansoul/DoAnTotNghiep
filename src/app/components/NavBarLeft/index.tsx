@@ -102,18 +102,6 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="/friendbirthday">
-                  <svg
-                    className="olymp-cupcake-icon left-menu-icon"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-bs-original-title="Friends Birthdays"
-                  >
-                    <use xlinkHref="#olymp-cupcake-icon" />
-                  </svg>
-                </a>
-              </li>
-              <li>
                 <a href="/chart">
                   <svg
                     className="olymp-stats-icon left-menu-icon"
@@ -122,6 +110,18 @@ export default function NavBarLeft() {
                     data-bs-original-title="Account Stats"
                   >
                     <use xlinkHref="#olymp-stats-icon" />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a href="/friendbirthday">
+                  <svg
+                    className="olymp-cupcake-icon left-menu-icon"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Friends Birthdays"
+                  >
+                    <use xlinkHref="#olymp-cupcake-icon" />
                   </svg>
                 </a>
               </li>
@@ -213,20 +213,7 @@ export default function NavBarLeft() {
                   >
                     <use xlinkHref="#olymp-badge-icon" />
                   </svg>
-                  <span className="left-menu-title">SPENDING</span>
-                </a>
-              </li>
-              <li>
-                <a href="/friendbirthday">
-                  <svg
-                    className="olymp-cupcake-icon left-menu-icon"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-bs-original-title="Friends Birthdays"
-                  >
-                    <use xlinkHref="#olymp-cupcake-icon" />
-                  </svg>
-                  <span className="left-menu-title">Friends Birthdays</span>
+                  <span className="left-menu-title">Spending</span>
                 </a>
               </li>
               <li>
@@ -240,6 +227,19 @@ export default function NavBarLeft() {
                     <use xlinkHref="#olymp-stats-icon" />
                   </svg>
                   <span className="left-menu-title">Account Chart</span>
+                </a>
+              </li>
+              <li>
+                <a href="/friendbirthday">
+                  <svg
+                    className="olymp-cupcake-icon left-menu-icon"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Friends Birthdays"
+                  >
+                    <use xlinkHref="#olymp-cupcake-icon" />
+                  </svg>
+                  <span className="left-menu-title">Friends Birthdays</span>
                 </a>
               </li>
             </ul>
@@ -389,19 +389,6 @@ export default function NavBarLeft() {
                 </a>
               </li>
               <li>
-                <a href="/friendbirthday">
-                  <svg
-                    className="olymp-cupcake-icon left-menu-icon"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-bs-original-title="Friends Birthdays"
-                  >
-                    <use xlinkHref="#olymp-cupcake-icon" />
-                  </svg>
-                  <span className="left-menu-title">Friends Birthdays</span>
-                </a>
-              </li>
-              <li>
                 <a href="/chart">
                   <svg
                     className="olymp-stats-icon left-menu-icon"
@@ -412,6 +399,19 @@ export default function NavBarLeft() {
                     <use xlinkHref="#olymp-stats-icon" />
                   </svg>
                   <span className="left-menu-title">Chart</span>
+                </a>
+              </li>
+              <li>
+                <a href="/friendbirthday">
+                  <svg
+                    className="olymp-cupcake-icon left-menu-icon"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Friends Birthdays"
+                  >
+                    <use xlinkHref="#olymp-cupcake-icon" />
+                  </svg>
+                  <span className="left-menu-title">Friends Birthdays</span>
                 </a>
               </li>
             </ul>

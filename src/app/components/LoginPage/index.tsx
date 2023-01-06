@@ -100,25 +100,7 @@ export default function LoginPage(props: {
                           >
                             Login
                           </button>
-                          <div className="or" />
-                          <a
-                            href="/#"
-                            className="btn btn-lg bg-facebook full-width btn-icon-left"
-                          >
-                            <svg width={16} height={16}>
-                              <use xlinkHref="#olymp-facebook-icon" />
-                            </svg>
-                            Login with Facebook
-                          </a>
-                          <a
-                            href="/#"
-                            className="btn btn-lg bg-twitter full-width btn-icon-left"
-                          >
-                            <svg width={16} height={16}>
-                              <use xlinkHref="#olymp-twitter-icon" />
-                            </svg>
-                            Login with Twitter
-                          </a>
+
                           <p>
                             Don’t you have an account?{" "}
                             <span

@@ -64,6 +64,7 @@ export default function MessageScreen(props: {
     // eslint-disable-next-line
   }, []);
   const handleSendMessage = () => {
+    if (!valueMessage) return;
     if (dataMessage && dataMessage.idDoc) {
       const dataCollection = doc(db, "Message", dataMessage.idDoc);
 

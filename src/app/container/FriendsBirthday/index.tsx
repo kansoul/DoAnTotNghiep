@@ -1,6 +1,9 @@
+import DefaultLayout from "app/layouts";
+
 export default function FriendsBirthday() {
   return (
     <>
+      <DefaultLayout />
       <div>
         {/* Main Header Birthday */}
         <div className="main-header">

@@ -71,14 +71,11 @@ export default function Diary() {
           <div className="row">
             <div className="col col-lg-8 m-auto col-md-8 col-sm-12 col-12">
               <div className="main-header-content">
-                <h1>Create and Manage Events</h1>
+                <h1>Thêm và chỉnh sửa nhật ký của bạn</h1>
                 <p>
-                  Welcome to your personal planner assistant. Here you’ll see
-                  all your next events and invites that your friends sent you.
-                  You can create 3 different types of events: Personal (for your
-                  daily errands), Private (for you and friends only) and Public
-                  (open to everyone). Create your events, invite friends and
-                  have fun!
+                  Chào mừng bạn đến với trang viết nhật ký. Tại đây bạn có thể
+                  lưu chữ, chỉnh sửa, xóa nhật ký của bản thân, và chia sẽ nó
+                  đến với bạn bè của mình!
                 </p>
               </div>
             </div>
