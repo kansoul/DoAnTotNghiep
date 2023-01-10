@@ -1,3 +1,4 @@
+import { Markup } from "interweave";
 import { dateTimeFormat } from "utils/datetime";
 
 export default function ChatBotCard(props: { data: any }) {

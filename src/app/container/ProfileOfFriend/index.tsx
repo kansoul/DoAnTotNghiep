@@ -1,3 +1,4 @@
+import FriendList from "app/components/FriendList";
 import DefaultLayout from "app/layouts";
 import { auth, db } from "app/services/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -5,7 +6,6 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import About from "./component/About";
-import FriendList from "./component/FriendList";
 import Timeline from "./component/Timeline";
 
 export default function ProfileOfFriend() {
@@ -180,7 +180,7 @@ export default function ProfileOfFriend() {
         {tab === "about" && (
           <About hobbies={hobbies} profileInfo={profileInfo} />
         )}
-        {tab === "friends" && <FriendList />}
+        {tab === "friends" && <FriendList userUid={profileInfo?.uid} />}
       </div>
     </>
   );
