@@ -21,3 +21,12 @@ export const filterDiarys = (diary: any) => {
   );
   return data;
 };
+
+export const filterLastMessenger = (lastMessenger: any) => {
+  const data = lastMessenger.sort(
+    (a: any, b: any) =>
+      new Date(b?.lastMessage?.sendAt?.toDate()).getTime() -
+      new Date(a?.lastMessage?.sendAt?.toDate()).getTime()
+  );
+  return data;
+};

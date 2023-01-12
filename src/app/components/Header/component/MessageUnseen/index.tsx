@@ -1,5 +1,6 @@
 import { auth } from "app/services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { filterLastMessenger } from "utils/helper";
 import LastMesenger from "./component/LastMesenger";
 
 export default function MessengerUnseen(props: {
@@ -9,7 +10,6 @@ export default function MessengerUnseen(props: {
 }) {
   const { setDataUser, setOpenMessage, lastMessages } = props;
   const [user] = useAuthState(auth);
-
   return (
     <div className="control-icon more has-items">
       <svg className="olymp-chat---messages-icon">
@@ -37,7 +37,7 @@ export default function MessengerUnseen(props: {
           <ul className="notification-list chat-message">
             {lastMessages &&
               lastMessages.length > 0 &&
-              lastMessages.map((val) =>
+              filterLastMessenger(lastMessages).map((val) =>
                 val?.lastMessage ? (
                   <LastMesenger
                     setDataUser={setDataUser}
