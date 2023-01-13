@@ -10,8 +10,8 @@ import "./index.css";
 export default function MoneySpending(props: { spendingList: Spending[] }) {
   const { spendingList } = props;
   const [balance, setBalance] = useState<number | null>(null);
-  const [income, setIncome] = useState<number | null>(null);
-  const [expenses, setExpenses] = useState<number | null>(null);
+  const [income, setIncome] = useState<number>(0);
+  const [expenses, setExpenses] = useState<number>(0);
   const [dataOFMonth, setDataOFMonth] = useState<any>([]);
 
   useEffect(() => {
@@ -45,8 +45,11 @@ export default function MoneySpending(props: { spendingList: Spending[] }) {
     }
   }, [spendingList, dataOFMonth]);
   useEffect(() => {
-    if (income && expenses) setBalance(income - expenses);
+    if ((income || income === 0) && (expenses || expenses === 0))
+      setBalance(income - expenses);
   }, [income, expenses]);
+  console.log(expenses);
+  console.log(income);
   return (
     <div className="money-details-container">
       <div className="balance-container">
