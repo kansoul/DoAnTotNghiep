@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Friend } from "types/Friend";
+import { handleNotifcationSound } from "utils/helper";
 import FriendCard from "../FriendCard";
 import MessengerUnseen from "./component/MessageUnseen";
 import LastMesenger from "./component/MessageUnseen/component/LastMesenger";
@@ -119,6 +120,23 @@ export default function Header() {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (
+      lastMessages.filter(
+        (val) =>
+          val?.lastMessage?.status === "UNSEND" &&
+          val?.lastMessage?.sender?.uid !== user?.uid
+      ).length > 0
+    ) {
+      handleNotifcationSound();
+    }
+  }, [
+    lastMessages.filter(
+      (val) =>
+        val?.lastMessage?.status === "UNSEND" &&
+        val?.lastMessage?.sender?.uid !== user?.uid
+    ).length,
+  ]);
   return (
     <>
       <div>
@@ -147,9 +165,8 @@ export default function Header() {
                 </button>
               </div>
             </form>
-            <a href="/#" className="link-find-friend">
-              Find Friends
-            </a>
+            <span className="link-find-friend">Find Friends</span>
+
             <div className="control-block">
               <div className="control-icon more has-items">
                 <svg className="olymp-happy-face-icon">

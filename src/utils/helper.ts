@@ -30,3 +30,9 @@ export const filterLastMessenger = (lastMessenger: any) => {
   );
   return data;
 };
+export const handleNotifcationSound = () => {
+  const audio: any = new Audio(
+    "https://firebasestorage.googleapis.com/v0/b/chia-se-nhat-ki.appspot.com/o/mp3%2Fmessage.mp3?alt=media&token=d0ee91aa-3f9a-4286-8416-1fbb71bc25ff"
+  );
+  audio.play();
+};
