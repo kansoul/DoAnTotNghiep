@@ -137,6 +137,12 @@ export default function Header() {
         val?.lastMessage?.sender?.uid !== user?.uid
     ).length,
   ]);
+
+  useEffect(() => {
+    if (friendList.length > 0) {
+      handleNotifcationSound();
+    }
+  }, [friendList.length]);
   return (
     <>
       <div>
