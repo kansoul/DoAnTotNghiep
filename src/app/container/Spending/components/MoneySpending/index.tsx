@@ -48,8 +48,6 @@ export default function MoneySpending(props: { spendingList: Spending[] }) {
     if ((income || income === 0) && (expenses || expenses === 0))
       setBalance(income - expenses);
   }, [income, expenses]);
-  console.log(expenses);
-  console.log(income);
   return (
     <div className="money-details-container">
       <div className="balance-container">
